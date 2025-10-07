@@ -184,16 +184,6 @@ let portfolioProjects = [
         image: "",
         demoUrl: "",
         githubUrl: "https://github.com/vcr1985/Microsservico_ecommerce"
-    },
-    {
-        id: 4,
-        title: "E-commerce Bless - Perfumes Importados",
-        category: "ecommerce",
-        description: "Loja virtual completa de perfumes importados desenvolvida na plataforma Loja Integrada. Projeto real para cliente com configuração personalizada, integração de pagamentos, gestão de estoque e sistema de entregas.",
-        technologies: ["Loja Integrada", "HTML/CSS", "JavaScript", "Gateway de Pagamento", "Correios API", "Google Analytics"],
-        image: "",
-        demoUrl: "https://bless-1.lojaintegrada.com.br/",
-        githubUrl: ""
     }
 ];
 
