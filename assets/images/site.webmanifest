@@ -1,0 +1,22 @@
+{
+    "name": "Vando Ramos - Portfólio",
+    "short_name": "VandoRamos",
+    "description": "Portfólio profissional - Desenvolvedor Web especializado em soluções digitais modernas",
+    "icons": [
+        {
+            "src": "./android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#3A7BD5",
+    "background_color": "#1a1a1a",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait"
+}

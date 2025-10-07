@@ -1,0 +1,49 @@
+# Logs e debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (caso use no futuro)
+node_modules/
+npm-debug.log
+.npm
+
+# Arquivos de backup
+*.bak
+*.backup
+*~
+
+# Arquivos temporários de desenvolvimento
+test/
+debug/
+temp/
+
+# Arquivos específicos que não devem ir para produção
+diagnostico-*.html
+teste-*.html
+preview-*.html
+validacao-*.html
+gerar-*.html
+
+# Arquivos ZIP ou compactados de desenvolvimento
+*.zip
+favicon_io/
+
+# Cache do navegador
+.cache/
+dist/
+build/

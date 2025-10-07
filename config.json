@@ -1,0 +1,191 @@
+{
+  "site": {
+    "title": "Vando Ramos - Desenvolvedor Web",
+    "description": "Portfólio profissional - Desenvolvedor Web especializado em criação de sites e aplicações modernas",
+    "author": "Vando Ramos",
+    "url": "https://seusite.com",
+    "language": "pt-br"
+  },
+  "personal": {
+    "name": "Vando Ramos",
+    "title": "Desenvolvedor Web",
+    "subtitle": "Especializado em criar soluções digitais modernas e funcionais",
+    "description": "Recém-formado em Análise e Desenvolvimento de Sistemas pela UNINOVE, pronto para transformar suas ideias em realidade digital.",
+    "location": "São Paulo, SP - Brasil",
+    "photo": "./assets/images/hero-image.jpg"
+  },
+  "contact": {
+    "email": "ramosvando@gmail.com",
+    "phone": "(11) 94891-6368",
+    "whatsapp": "5511948916368",
+    "linkedin": "https://www.linkedin.com/in/vcr1985-br/",
+    "github": "https://github.com/vcr1985",
+    "credly": "",
+    "dio": "https://web.dio.me/certificates"
+  },
+  "education": {
+    "degree": "Análise e Desenvolvimento de Sistemas",
+    "institution": "UNINOVE - Universidade Nove de Julho",
+    "period": "2022 - 2024",
+    "description": "Formação superior focada em desenvolvimento de software, programação, banco de dados, análise de sistemas e metodologias ágeis."
+  },
+  "services": [
+    {
+      "icon": "fas fa-laptop-code",
+      "title": "Desenvolvimento de Sites",
+      "description": "Criação de sites responsivos e modernos, desde landing pages até portais complexos.",
+      "features": [
+        "Design Responsivo",
+        "SEO Otimizado", 
+        "Performance Otimizada",
+        "Manutenção Incluída"
+      ],
+      "price": "A partir de R$ 2.500"
+    },
+    {
+      "icon": "fas fa-mobile-alt",
+      "title": "Aplicações Web",
+      "description": "Desenvolvimento de aplicações web interativas e sistemas personalizados.",
+      "features": [
+        "Interface Intuitiva",
+        "Banco de Dados",
+        "API Integration",
+        "Painel Administrativo"
+      ],
+      "price": "A partir de R$ 5.000"
+    },
+    {
+      "icon": "fas fa-shopping-cart",
+      "title": "E-commerce",
+      "description": "Lojas virtuais completas com sistema de pagamento e gestão de produtos.",
+      "features": [
+        "Carrinho de Compras",
+        "Pagamentos Online",
+        "Gestão de Estoque",
+        "Relatórios de Vendas"
+      ],
+      "price": "A partir de R$ 8.000"
+    },
+    {
+      "icon": "fas fa-tools",
+      "title": "Manutenção & Suporte",
+      "description": "Manutenção contínua, atualizações e suporte técnico para seu site ou aplicação.",
+      "features": [
+        "Backup Regular",
+        "Atualizações de Segurança",
+        "Monitoramento 24/7",
+        "Suporte Técnico"
+      ],
+      "price": "A partir de R$ 300/mês"
+    }
+  ],
+  "skills": [
+    {
+      "name": "HTML5",
+      "icon": "fab fa-html5",
+      "level": 95
+    },
+    {
+      "name": "CSS3",
+      "icon": "fab fa-css3-alt",
+      "level": 90
+    },
+    {
+      "name": "JavaScript",
+      "icon": "fab fa-js-square",
+      "level": 85
+    },
+    {
+      "name": "React",
+      "icon": "fab fa-react",
+      "level": 80
+    },
+    {
+      "name": "Node.js",
+      "icon": "fab fa-node-js",
+      "level": 75
+    },
+    {
+      "name": "Database",
+      "icon": "fas fa-database",
+      "level": 70
+    },
+    {
+      "name": "Git",
+      "icon": "fab fa-git-alt",
+      "level": 85
+    },
+    {
+      "name": "Figma",
+      "icon": "fab fa-figma",
+      "level": 70
+    }
+  ],
+  "certifications": [
+    {
+      "title": "JavaScript Fundamentals",
+      "issuer": "Credly",
+      "date": "2024",
+      "badge": "./assets/images/credly-logo.png"
+    },
+    {
+      "title": "Web Development",
+      "issuer": "Credly", 
+      "date": "2024",
+      "badge": "./assets/images/credly-logo.png"
+    },
+    {
+      "title": "Database Management",
+      "issuer": "Credly",
+      "date": "2024",
+      "badge": "./assets/images/credly-logo.png"
+    }
+  ],
+  "stats": [
+    {
+      "number": "15+",
+      "label": "Projetos Realizados"
+    },
+    {
+      "number": "100%",
+      "label": "Clientes Satisfeitos"
+    },
+    {
+      "number": "24/7",
+      "label": "Suporte Dedicado"
+    }
+  ],
+  "theme": {
+    "primaryColor": "#6366f1",
+    "primaryDark": "#4338ca",
+    "secondaryColor": "#0f172a",
+    "accentColor": "#f59e0b",
+    "fontFamily": "Poppins, sans-serif"
+  },
+  "seo": {
+    "keywords": [
+      "desenvolvimento web",
+      "programador",
+      "portfólio",
+      "sites profissionais",
+      "aplicações web",
+      "freelancer",
+      "front-end",
+      "back-end",
+      "full-stack"
+    ],
+    "ogImage": "./assets/images/og-image.jpg"
+  },
+  "integrations": {
+    "googleAnalytics": "",
+    "googleTagManager": "",
+    "facebookPixel": "",
+    "hotjar": "",
+    "formspree": "",
+    "emailjs": {
+      "serviceId": "",
+      "templateId": "",
+      "publicKey": ""
+    }
+  }
+}

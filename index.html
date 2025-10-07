@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vando Ramos - Desenvolvedor Web</title>
+    <meta name="description" content="Desenvolvedor Web especializado em soluções digitais inovadoras com Inteligência Artificial. Integro IA em projetos web para criar experiências inteligentes e automatizadas.">
+    <meta name="keywords" content="desenvolvedor web, inteligência artificial, IA, programador, portfolio, JavaScript, HTML, CSS, React, machine learning, automação">
+    <meta name="author" content="Vando Ramos">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Vando Ramos - Desenvolvedor Web | Especialista em IA">
+    <meta property="og:description" content="Desenvolvedor Web especializado em soluções digitais inovadoras com Inteligência Artificial. Integro IA em projetos web para criar experiências inteligentes e automatizadas.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vcr1985.github.io/Site-Portfolio/">
+    <meta property="og:image" content="https://vcr1985.github.io/Site-Portfolio/assets/images/IMG-Perfil.jpg">
+    <meta property="og:site_name" content="Vando Ramos - Portfolio">
+    <meta property="og:locale" content="pt_BR">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vando Ramos - Desenvolvedor Web | Especialista em IA">
+    <meta name="twitter:description" content="Desenvolvedor Web especializado em soluções digitais inovadoras com Inteligência Artificial.">
+    <meta name="twitter:image" content="https://vcr1985.github.io/Site-Portfolio/assets/images/IMG-Perfil.jpg">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <link rel="canonical" href="https://vcr1985.github.io/Site-Portfolio/">
+    
+    <!-- Favicon "VR" - Múltiplas tentativas de compatibilidade -->
+    <link rel="icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3crect width='32' height='32' fill='%233A7BD5'/%3e%3ctext x='50%25' y='65%25' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='14' font-weight='bold'%3eVR%3c/text%3e%3c/svg%3e">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3crect width='32' height='32' fill='%233A7BD5'/%3e%3ctext x='50%25' y='65%25' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='14' font-weight='bold'%3eVR%3c/text%3e%3c/svg%3e">
+    <link rel="icon" sizes="32x32" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3crect width='32' height='32' fill='%233A7BD5'/%3e%3ctext x='50%25' y='65%25' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='14' font-weight='bold'%3eVR%3c/text%3e%3c/svg%3e">
+    
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="#home">Vando Ramos</a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#services" class="nav-link">Serviços</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#education" class="nav-link">Formação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#experience" class="nav-link">Experiência</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#portfolio" class="nav-link">Portfólio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link">Contato</a>
+                    </li>
+                </ul>
+                <div class="nav-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content" data-aos="fade-up">
+                <h1 class="hero-title">
+                    Olá, eu sou <span class="highlight">Vando Ramos</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Desenvolvedor Web especializado em soluções digitais inovadoras com <strong>Inteligência Artificial</strong>
+                </p>
+                <p class="hero-description">
+                    Recém-formado em Análise e Desenvolvimento de Sistemas pela UNINOVE. 
+                    Integro IA em projetos web para criar experiências inteligentes, automatizadas e personalizadas.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">Entre em Contato</a>
+                    <a href="#portfolio" class="btn btn-secondary">Ver Trabalhos</a>
+                </div>
+                <div class="hero-social">
+                    <a href="https://www.linkedin.com/in/vcr1985-br/" class="social-link" aria-label="LinkedIn" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/vcr1985" class="social-link" aria-label="GitHub" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://wa.me/5511948916368" class="social-link" aria-label="WhatsApp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="mailto:ramosvando@gmail.com" class="social-link" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-left" data-aos-delay="200">
+                <img src="./assets/images/IMG-Perfil.jpg" alt="Vando Ramos - Desenvolvedor Web" class="hero-img" 
+                     onerror="this.style.display='none'; this.parentNode.querySelector('.hero-placeholder').style.display='flex';">
+                <div class="hero-placeholder" style="display: none;">
+                    <i class="fas fa-user"></i>
+                    <span>Adicione sua foto aqui</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Sobre Mim</h2>
+                <p class="section-subtitle">Conheça mais sobre minha trajetória e experiência</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <h3>Desenvolvedor Web + Inteligência Artificial</h3>
+                    <p>
+                        Sou um desenvolvedor web recém-formado em Análise e Desenvolvimento de Sistemas 
+                        pela UNINOVE, especializado em integrar <strong>Inteligência Artificial</strong> 
+                        em soluções digitais modernas e inovadoras.
+                    </p>
+                    <p>
+                        Combino desenvolvimento full-stack com tecnologias de IA para criar aplicações 
+                        inteligentes: chatbots, automação, análise de dados, machine learning e 
+                        personalização de experiência do usuário. Transformo projetos comuns em 
+                        soluções inteligentes e eficientes.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-text">Projetos Realizados</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-text">Clientes Satisfeitos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-text">Suporte Dedicado</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-skills" data-aos="fade-left" data-aos-delay="200">
+                    <h4>Tecnologias & Ferramentas</h4>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-react"></i>
+                            <span>React</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-node-js"></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-database"></i>
+                            <span>Database</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-figma"></i>
+                            <span>Figma</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Machine Learning</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-robot"></i>
+                            <span>Chatbots IA</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python IA</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Análise de Dados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Meus Serviços</h2>
+                <p class="section-subtitle">Soluções completas em desenvolvimento web integradas com Inteligência Artificial</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Desenvolvimento de Sites</h3>
+                    <p>Criação de sites responsivos e modernos com recursos de IA integrados, desde landing pages inteligentes até portais complexos.</p>
+                    <p>Sites com chatbots, personalização automática e análise comportamental por IA.</p>
+                    <p>Edição de Imagens Canvas e processamento inteligente de conteúdo.</p>
+                    <ul class="service-features">
+                        <li>Design Responsivo</li>
+                        <li>SEO Otimizado</li>
+                        <li>Performance Otimizada</li>
+                        <li>Manutenção Incluída</li>
+                    </ul>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Aplicações Web</h3>
+                    <p>Desenvolvimento de aplicações web interativas e sistemas personalizados.</p>
+                    <ul class="service-features">
+                        <li>Interface Intuitiva</li>
+                        <li>Banco de Dados</li>
+                        <li>API Integration</li>
+                        <li>Painel Administrativo</li>
+                    </ul>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>E-commerce</h3>
+                    <p>Lojas virtuais completas com sistema de pagamento e gestão de produtos.</p>
+                    <ul class="service-features">
+                        <li>Carrinho de Compras</li>
+                        <li>Pagamentos Online</li>
+                        <li>Gestão de Estoque</li>
+                        <li>Relatórios de Vendas</li>
+                    </ul>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Inteligência Artificial</h3>
+                    <p>Integração de IA em projetos web para criar soluções inteligentes e automatizadas.</p>
+                    <ul class="service-features">
+                        <li>Chatbots Inteligentes</li>
+                        <li>Automação de Processos</li>
+                        <li>Análise de Dados com IA</li>
+                        <li>Personalização por IA</li>
+                    </ul>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Manutenção & Suporte</h3>
+                    <p>Manutenção contínua, atualizações e suporte técnico para seu site ou aplicação.</p>
+                    <ul class="service-features">
+                        <li>Backup Regular</li>
+                        <li>Atualizações de Segurança</li>
+                        <li>Monitoramento 24/7</li>
+                        <li>Suporte Técnico</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Formação & Certificações</h2>
+                <p class="section-subtitle">Minha jornada de aprendizado e qualificações profissionais</p>
+            </div>
+            <div class="education-content">
+                <div class="education-main" data-aos="fade-right">
+                    <div class="education-item">
+                        <div class="education-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="education-details">
+                            <h3>Análise e Desenvolvimento de Sistemas</h3>
+                            <p class="education-institution">UNINOVE - Universidade Nove de Julho</p>
+                            <p class="education-year">2023 - 2025</p>
+                            <p class="education-description">
+                                Formação superior focada em desenvolvimento de software, programação, 
+                                banco de dados, análise de sistemas e metodologias ágeis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="certifications" data-aos="fade-left" data-aos-delay="200">
+                    <h3>Certificações & Cursos</h3>
+                    
+                    <!-- Bootcamps -->
+                    <div class="cert-category">
+                        <h4><i class="fas fa-rocket"></i> Bootcamps</h4>
+                        <div class="certifications-grid">
+                            <div class="cert-item bootcamp">
+                                <div class="cert-badge dio">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Bootcamp .NET Developer</h5>
+                                    <p>Digital Innovation One (DIO) • 2024</p>
+                                    <span class="cert-hours">120+ horas</span>
+                                </div>
+                            </div>
+                            <div class="cert-item bootcamp">
+                                <div class="cert-badge dio">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Bootcamp Machine Learning</h5>
+                                    <p>Digital Innovation One (DIO) • 2024</p>
+                                    <span class="cert-hours">80+ horas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificações Técnicas -->
+                    <div class="cert-category">
+                        <h4><i class="fas fa-certificate"></i> Certificações Técnicas</h4>
+                        <div class="certifications-grid">
+                            <div class="cert-item">
+                                <div class="cert-badge microsoft">
+                                    <i class="fab fa-microsoft"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Azure AI Fundamentals (AI-900)</h5>
+                                    <p>Microsoft • Em andamento</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cursos Complementares -->
+                    <div class="cert-category">
+                        <h4><i class="fas fa-graduation-cap"></i> Cursos Complementares</h4>
+                        <div class="certifications-grid">
+                            <div class="cert-item course">
+                                <div class="cert-badge">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Banco de Dados SQL Server</h5>
+                                    <p>Plataforma de Ensino • 2024</p>
+                                </div>
+                            </div>
+                            <div class="cert-item course">
+                                <div class="cert-badge">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Docker & Kubernetes</h5>
+                                    <p>Plataforma de Ensino • 2024</p>
+                                </div>
+                            </div>
+                            <div class="cert-item course">
+                                <div class="cert-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h5>Segurança em APIs</h5>
+                                    <p>Plataforma de Ensino • 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="credly-profile">
+                        <a href="https://web.dio.me/certificates" class="btn btn-outline" target="_blank">
+                            <i class="fas fa-certificate"></i>
+                            Ver Meus Certificados DIO
+                        </a>
+                        <button id="add-cert-btn" class="btn btn-admin">
+                            <i class="fas fa-plus"></i> Adicionar Certificado
+                        </button>
+                        <button id="import-linkedin-btn" class="btn btn-linkedin">
+                            <i class="fab fa-linkedin"></i>
+                            Importar do LinkedIn
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Experiência Profissional</h2>
+                <p class="section-subtitle">Minha trajetória profissional e contribuições</p>
+            </div>
+            <div class="experience-content">
+                <div class="experience-timeline">
+                    <div class="experience-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="experience-date">
+                            <span class="experience-year">2024</span>
+                            <span class="experience-period">Jul - Dez</span>
+                        </div>
+                        <div class="experience-details">
+                            <div class="experience-company">
+                                <div class="company-logo">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="company-info">
+                                    <h3>Digitador Voluntário</h3>
+                                    <h4>Fundação Gol de Letra</h4>
+                                    <span class="experience-type">Temporário · Remoto</span>
+                                    <span class="experience-location">São Paulo, Brasil</span>
+                                </div>
+                            </div>
+                            <div class="experience-description">
+                                <p>
+                                    É com imenso prazer que contribuí como digitador voluntário na ONG Gol de Letra. 
+                                    Estive entusiasmado em poder contribuir com meu trabalho para esta causa tão importante, 
+                                    auxiliando na digitalização e organização de documentos essenciais para os projetos 
+                                    sociais da fundação.
+                                </p>
+                                <div class="experience-skills">
+                                    <span class="skill-tag">Trabalho Voluntário</span>
+                                    <span class="skill-tag">Digitalização</span>
+                                    <span class="skill-tag">Organização de Dados</span>
+                                    <span class="skill-tag">Responsabilidade Social</span>
+                                    <span class="skill-tag">Trabalho Remoto</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Meu Portfólio</h2>
+                <p class="section-subtitle">Alguns dos projetos que desenvolvi recentemente</p>
+            </div>
+            <div class="portfolio-filter" data-aos="fade-up" data-aos-delay="100">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="website">Sites</button>
+                <button class="filter-btn" data-filter="webapp">Web Apps</button>
+                <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+            </div>
+            <div class="portfolio-grid" id="portfolio-container">
+                <!-- Portfolio items will be dynamically loaded here -->
+            </div>
+            <div class="portfolio-admin" data-aos="fade-up">
+                <button id="add-project-btn" class="btn btn-admin">
+                    <i class="fas fa-plus"></i> Adicionar Projeto
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Entre em Contato</h2>
+                <p class="section-subtitle">Vamos conversar sobre seu próximo projeto</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <h3>Vamos trabalhar juntos!</h3>
+                    <p>
+                        Estou sempre aberto a novos desafios e oportunidades. 
+                        Entre em contato para discutirmos como posso ajudar a 
+                        transformar sua ideia em realidade.
+                    </p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <p>ramosvando@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Telefone</h4>
+                                <p>(11) 94891-6368</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Localização</h4>
+                                <p>São Paulo, SP - Brasil</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container" data-aos="fade-left" data-aos-delay="200">
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nome Completo *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Empresa</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Serviço de Interesse</label>
+                            <select id="service" name="service">
+                                <option value="">Selecione um serviço</option>
+                                <option value="website">Desenvolvimento de Site</option>
+                                <option value="webapp">Aplicação Web</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="maintenance">Manutenção/Suporte</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Orçamento Estimado</label>
+                            <select id="budget" name="budget">
+                                <option value="">Selecione uma faixa</option>
+                                <option value="100-300">R$ 100 - R$ 300</option>
+                                <option value="300-500">R$ 300 - R$ 500</option>
+                                <option value="500-1000">R$ 500 - R$ 1.000</option>
+                                <option value="1000-3000">R$ 1.000 - R$ 3.000</option>
+                                <option value="3000-5000">R$ 3.000 - R$ 5.000</option>
+                                <option value="5000-10000">R$ 5.000 - R$ 10.000</option>
+                                <option value="10000+">Acima de R$ 10.000</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensagem *</label>
+                            <textarea id="message" name="message" rows="5" required 
+                                placeholder="Conte-me mais sobre seu projeto..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Vando Ramos</h3>
+                    <p>Desenvolvedor Web especializado em soluções digitais inovadoras com Inteligência Artificial.</p>
+                    <div class="footer-social">
+                        <a href="https://www.linkedin.com/in/vcr1985-br/" class="social-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/vcr1985" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://wa.me/5511948916368" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:ramosvando@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#portfolio">Portfólio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Serviços</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services">Desenvolvimento Web</a></li>
+                        <li><a href="#services">Aplicações Web</a></li>
+                        <li><a href="#services">E-commerce</a></li>
+                        <li><a href="#services">Manutenção</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-envelope"></i> ramosvando@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> (11) 94891-6368</p>
+                        <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vando Ramos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Modal for Adding Projects -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Novo Projeto</h2>
+            <form id="project-form">
+                <div class="form-group">
+                    <label for="project-title">Título do Projeto</label>
+                    <input type="text" id="project-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-category">Categoria</label>
+                    <select id="project-category" required>
+                        <option value="website">Site</option>
+                        <option value="webapp">Web App</option>
+                        <option value="ecommerce">E-commerce</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="project-description">Descrição</label>
+                    <textarea id="project-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="project-technologies">Tecnologias</label>
+                    <input type="text" id="project-technologies" placeholder="HTML, CSS, JavaScript...">
+                </div>
+                <div class="form-group">
+                    <label for="project-image">URL da Imagem</label>
+                    <input type="url" id="project-image">
+                </div>
+                <div class="form-group">
+                    <label for="project-demo">Link Demo (opcional)</label>
+                    <input type="url" id="project-demo">
+                </div>
+                <div class="form-group">
+                    <label for="project-github">Link GitHub (opcional)</label>
+                    <input type="url" id="project-github">
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Projeto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Certificates -->
+    <div id="certificate-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Certificado</h2>
+            <form id="certificate-form">
+                <div class="form-group">
+                    <label for="cert-title">Título do Certificado</label>
+                    <input type="text" id="cert-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="cert-category">Categoria</label>
+                    <select id="cert-category" required>
+                        <option value="bootcamp">Bootcamp</option>
+                        <option value="certification">Certificação Técnica</option>
+                        <option value="course">Curso Complementar</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cert-institution">Instituição/Plataforma</label>
+                    <input type="text" id="cert-institution" placeholder="ex: Microsoft, Udemy, DIO...">
+                </div>
+                <div class="form-group">
+                    <label for="cert-year">Ano de Conclusão</label>
+                    <input type="number" id="cert-year" min="2020" max="2030" value="2024">
+                </div>
+                <div class="form-group">
+                    <label for="cert-hours">Carga Horária (opcional)</label>
+                    <input type="text" id="cert-hours" placeholder="ex: 40 horas, 200+ horas">
+                </div>
+                <div class="form-group">
+                    <label for="cert-icon">Ícone (Font Awesome)</label>
+                    <input type="text" id="cert-icon" placeholder="ex: fas fa-code, fab fa-microsoft">
+                </div>
+                <div class="form-group">
+                    <label for="cert-url">Link do Certificado (opcional)</label>
+                    <input type="url" id="cert-url">
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Certificado</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for LinkedIn Import -->
+    <div id="linkedin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLinkedInModal()">&times;</span>
+            <h2><i class="fab fa-linkedin"></i> Importar Cursos do LinkedIn</h2>
+            <div class="linkedin-import-info">
+                <div class="info-box">
+                    <h3>📋 Como Importar Seus Cursos:</h3>
+                    <ol>
+                        <li>Acesse seu <strong>LinkedIn</strong> → Seção <strong>"Licenças e certificações"</strong></li>
+                        <li>Copie o <strong>nome do curso</strong></li>
+                        <li>Cole abaixo e preencha os detalhes</li>
+                        <li>Repita para cada certificado</li>
+                    </ol>
+                </div>
+                
+                <div class="quick-add-section">
+                    <h3>⚡ Adicionar Curso Rápido:</h3>
+                    <form id="linkedin-course-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="linkedin-course-name">Nome do Curso *</label>
+                                <input type="text" id="linkedin-course-name" placeholder="ex: JavaScript Essentials" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin-institution">Instituição *</label>
+                                <input type="text" id="linkedin-institution" placeholder="ex: LinkedIn Learning, Coursera" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="linkedin-date">Data de Conclusão</label>
+                                <input type="text" id="linkedin-date" placeholder="ex: 2024, Out 2024">
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin-hours">Carga Horária</label>
+                                <input type="text" id="linkedin-hours" placeholder="ex: 8 horas">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="linkedin-url">Link do Certificado</label>
+                            <input type="url" id="linkedin-url" placeholder="https://linkedin.com/...">
+                        </div>
+                        <button type="button" onclick="addLinkedInCourse()" class="btn btn-linkedin">
+                            <i class="fas fa-plus"></i> Adicionar Curso
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bulk-import-section">
+                    <h3>📝 Importação em Lote:</h3>
+                    <p>Cole aqui uma lista de cursos (um por linha):</p>
+                    <textarea id="bulk-courses" rows="6" placeholder="JavaScript Essentials | LinkedIn Learning | 2024
+Python for Data Science | Coursera | 2024
+AWS Cloud Fundamentals | Amazon | 2024"></textarea>
+                    <button type="button" onclick="processBulkImport()" class="btn btn-outline">
+                        <i class="fas fa-upload"></i> Processar Lista
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- JavaScript Principal -->
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
