@@ -39,6 +39,18 @@ preview-*.html
 validacao-*.html
 gerar-*.html
 
+# Arquivos de documentação temporária
+ARQUIVOS-UPLOAD.md
+DEPLOY-RAPIDO.md
+FAVICON-IMPLEMENTACAO.md
+FAVICON-INSTALACAO.md
+IMAGENS.md
+LISTA-FINAL-UPLOAD.md
+UPLOAD-SITE-PORTFOLIO.md
+
+# PDFs e arquivos de treinamento
+*.pdf
+
 # Arquivos ZIP ou compactados de desenvolvimento
 *.zip
 favicon_io/
