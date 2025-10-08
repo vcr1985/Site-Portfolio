@@ -163,7 +163,7 @@ section {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(47, 42, 42, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.5);
     z-index: 1000;
@@ -198,14 +198,14 @@ section {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-primary);
+    color: var(--text-white);
     font-weight: 500;
     transition: var(--transition);
     position: relative;
 }
 
 .nav-link:hover {
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 
 .nav-link::after {
@@ -215,7 +215,7 @@ section {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--primary-color);
+    background: var(--accent-color);
     transition: var(--transition);
 }
 
