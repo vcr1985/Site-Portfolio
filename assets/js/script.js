@@ -1513,7 +1513,7 @@ function closeCertModal() {
 function downloadCertificate(imageUrl) {
     // Verificação de segurança - apenas admin pode baixar certificados
     if (!isAdminAuthenticated) {
-        showNotification('🔒 Acesso negado! Apenas o proprietário pode baixar certificados.', 'error');
+        triggerSecurityAlert('Tentativa de download não autorizada!');
         console.warn('🚨 Unauthorized certificate download attempt blocked');
         logAdminAction('UNAUTHORIZED_DOWNLOAD_ATTEMPT', { 
             imageUrl, 
@@ -2095,6 +2095,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Preload hover states para melhor UX
     setTimeout(preloadHoverStates, 1000);
+    
+    // Inicializar sistema de certificados PDF
+    initPDFCertificates();
+    
+    // Inicializar proteções de imagem
+    initImageProtections();
+    
+    // Inicializar monitoramento avançado de segurança
+    initAdvancedSecurityMonitoring();
 });
 
 function preloadHoverStates() {
@@ -2130,6 +2139,678 @@ window.closeCertModal = closeCertModal;
 window.downloadCertificate = downloadCertificate;
 window.loadAllCertificates = loadAllCertificates;
 window.filterCertificates = filterCertificates;
+
+// ===================== SISTEMA DE ALERTA SONORO =====================
+/**
+ * Gera um som de alerta para tentativas de pirataria (versão aprimorada)
+ */
+function playSecurityAlert() {
+    console.log('🔊 Tentando reproduzir alerta de segurança...');
+    
+    // Método 0: Som básico com interação do usuário
+    tryBasicAlert();
+    
+    // Método 1: Web Audio API (mais moderno e confiável)
+    if (tryWebAudioAlert()) return;
+    
+    // Método 2: Audio HTML5 com data URI
+    if (tryHtmlAudioAlert()) return;
+    
+    // Método 3: Speech Synthesis
+    if (trySpeechAlert()) return;
+    
+    // Método 4: Notification API (como último recurso)
+    tryNotificationAlert();
+}
+
+/**
+ * Método 0: Som básico que força interação
+ */
+function tryBasicAlert() {
+    try {
+        // Usar console.log com caractere de beep ASCII
+        console.log('🚨\x07 ALERTA DE SEGURANÇA! \x07🚨');
+        
+        // Tentar o clássico window.alert com som
+        if (confirm('🚨 ALERTA DE SEGURANÇA!\n\nTentativa de pirataria detectada!\n\nClique OK para continuar.')) {
+            console.log('Usuário confirmou o alerta');
+        }
+        
+        return true;
+    } catch (error) {
+        console.warn('❌ Som básico falhou:', error);
+        return false;
+    }
+}
+
+/**
+ * Método 1: Web Audio API aprimorado
+ */
+function tryWebAudioAlert() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return false;
+        
+        // Usar contexto global para evitar problemas
+        if (!window.securityAudioContext) {
+            window.securityAudioContext = new AudioContext();
+        }
+        
+        const audioContext = window.securityAudioContext;
+        
+        // Garantir que o contexto esteja ativo
+        if (audioContext.state === 'suspended') {
+            audioContext.resume().then(() => {
+                console.log('AudioContext resumido');
+            });
+        }
+        
+        // Função melhorada para criar beep
+        const createBeep = (frequency, duration, delay = 0, volume = 0.7) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    try {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                        oscillator.type = 'sawtooth'; // Som mais forte
+                        
+                        // Envelope mais agressivo
+                        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.005);
+                        gainNode.gain.linearRampToValueAtTime(volume * 0.7, audioContext.currentTime + duration * 0.5);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + duration);
+                        
+                        oscillator.onended = resolve;
+                        
+                    } catch (error) {
+                        console.warn('Erro ao criar beep:', error);
+                        resolve();
+                    }
+                }, delay);
+            });
+        };
+        
+        // Sequência mais agressiva de alertas
+        createBeep(1200, 0.2, 0, 0.8)     // Bip muito agudo
+            .then(() => createBeep(600, 0.2, 50, 0.8))  // Bip grave
+            .then(() => createBeep(1000, 0.3, 50, 0.9)) // Bip médio longo
+            .then(() => createBeep(1400, 0.15, 100, 0.8)); // Bip final agudo
+        
+        console.log('✅ Web Audio API funcionando');
+        return true;
+        
+    } catch (error) {
+        console.warn('❌ Web Audio API falhou:', error);
+        return false;
+    }
+}
+
+/**
+ * Método 2: HTML5 Audio com data URI
+ */
+function tryHtmlAudioAlert() {
+    try {
+        // Som de bip codificado em base64 (wav muito pequeno)
+        const audioData = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N+QQAoUXrTp66hVFApGn+DyvmAXBTy7///DciQgFluxUQK///DKSDBKxvjdjE0CJUfL7+KSXBC//////wAAAAECAmpCLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N+QQAoUXrTp66hVFApGn+DyvmAXBTy7///DcjkgBF+6UUGTz/DBhCotWNX6yG7LJj/7///////8AAExCQBoRiYHQ2ydKl1v9z8zhI9plq54tVI2v+z8QAIBARHFMAHB2MDIaD9hCnwgBagtj+7////////YAAEFBQEJEISA=';
+        
+        const audio = new Audio(audioData);
+        audio.volume = 0.7;
+        audio.play().then(() => {
+            console.log('✅ HTML5 Audio funcionando');
+        }).catch(e => {
+            console.warn('❌ HTML5 Audio falhou:', e);
+            return false;
+        });
+        
+        return true;
+        
+    } catch (error) {
+        console.warn('❌ HTML5 Audio falhou:', error);
+        return false;
+    }
+}
+
+/**
+ * Método 3: Speech Synthesis aprimorado
+ */
+function trySpeechAlert() {
+    try {
+        if (!window.speechSynthesis) return false;
+        
+        // Cancelar qualquer fala anterior
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance('ALERTA! ALERTA! ALERTA!');
+        utterance.volume = 0.8;
+        utterance.rate = 1.5;
+        utterance.pitch = 1.8;
+        utterance.lang = 'pt-BR';
+        
+        window.speechSynthesis.speak(utterance);
+        
+        console.log('✅ Speech Synthesis funcionando');
+        return true;
+        
+    } catch (error) {
+        console.warn('❌ Speech Synthesis falhou:', error);
+        return false;
+    }
+}
+
+/**
+ * Método 4: Notification API como último recurso
+ */
+function tryNotificationAlert() {
+    try {
+        if (!('Notification' in window)) return false;
+        
+        if (Notification.permission === 'granted') {
+            new Notification('🚨 ALERTA DE SEGURANÇA! �', {
+                body: 'Tentativa de pirataria detectada!',
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🚨</text></svg>',
+                requireInteraction: true
+            });
+            console.log('✅ Notification API funcionando');
+            return true;
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    tryNotificationAlert();
+                }
+            });
+        }
+        
+        return false;
+        
+    } catch (error) {
+        console.warn('❌ Notification API falhou:', error);
+        return false;
+    }
+}
+
+/**
+ * Toca alerta sonoro e mostra notificação visual
+ */
+function triggerSecurityAlert(message) {
+    console.log('🚨 ALERTA ACIONADO:', message);
+    
+    // Tocar som de alerta
+    playSecurityAlert();
+    
+    // Mostrar notificação visual mais destacada
+    showNotification(`🚨 ${message}`, 'error');
+    
+    // Log de segurança detalhado
+    console.warn(`🚨 TENTATIVA DE PIRATARIA DETECTADA: ${message}`);
+    console.trace('Stack trace da violação de segurança');
+    
+    // Adicionar efeito visual de alerta mais intenso
+    document.body.style.animation = 'securityAlert 0.5s ease-in-out';
+    
+    // Vibração se disponível (móveis)
+    if ('vibrate' in navigator) {
+        navigator.vibrate([200, 100, 200, 100, 200]);
+    }
+    
+    setTimeout(() => {
+        document.body.style.animation = '';
+    }, 500);
+}
+
+/**
+ * Função de teste do sistema de alerta (para debug)
+ */
+function testSecurityAlert() {
+    console.log('🧪 TESTE DO SISTEMA DE ALERTA INICIADO');
+    
+    // Testar todos os métodos
+    console.log('Testando Web Audio API...');
+    tryWebAudioAlert();
+    
+    setTimeout(() => {
+        console.log('Testando HTML5 Audio...');
+        tryHtmlAudioAlert();
+    }, 1000);
+    
+    setTimeout(() => {
+        console.log('Testando Speech Synthesis...');
+        trySpeechAlert();
+    }, 2000);
+    
+    setTimeout(() => {
+        console.log('Testando Notification API...');
+        tryNotificationAlert();
+    }, 3000);
+    
+    // Teste completo
+    setTimeout(() => {
+        console.log('Teste completo do sistema:');
+        triggerSecurityAlert('Teste do sistema de segurança');
+    }, 4000);
+}
+
+// ===================== VISUALIZADOR DE PDF =====================
+/**
+ * Abre o modal para visualizar um certificado PDF
+ * @param {string} pdfPath - Caminho para o arquivo PDF
+ * @param {string} title - Título do certificado
+ * @param {string} institution - Instituição emissora
+ * @param {string} date - Data de emissão
+ */
+function viewPDFCertificate(pdfPath, title, institution, date) {
+    // Verificar se o PDF existe e é válido
+    if (!pdfPath || pdfPath.trim() === '') {
+        showNotification('❌ Caminho do PDF não encontrado!', 'error');
+        return;
+    }
+
+    // Criar o modal se não existir
+    let pdfModal = document.getElementById('pdfModal');
+    if (!pdfModal) {
+        pdfModal = createPDFModal();
+        document.body.appendChild(pdfModal);
+    }
+
+    // Atualizar conteúdo do modal
+    updatePDFModalContent(pdfModal, pdfPath, title, institution, date);
+    
+    // Mostrar o modal
+    pdfModal.classList.add('active');
+    
+    // Adicionar event listener para fechar com ESC
+    document.addEventListener('keydown', closePDFModalOnEsc);
+    
+    // Prevenir scroll da página
+    document.body.style.overflow = 'hidden';
+    
+    console.log(`📄 Abrindo certificado PDF: ${title}`);
+}
+
+/**
+ * Cria o elemento modal para visualização de PDF
+ */
+function createPDFModal() {
+    const modal = document.createElement('div');
+    modal.id = 'pdfModal';
+    modal.className = 'pdf-modal';
+    
+    modal.innerHTML = `
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3 id="pdfModalTitle">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Certificado PDF</span>
+                </h3>
+                <button class="pdf-modal-close" onclick="closePDFModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="pdf-viewer-container">
+                <iframe id="pdfEmbed" class="pdf-embed" src="" type="application/pdf"></iframe>
+                <div id="pdfFallback" class="pdf-fallback" style="display: none;">
+                    <i class="fas fa-file-pdf"></i>
+                    <h4>Visualização não disponível</h4>
+                    <p>Seu navegador não suporta a visualização de PDF inline.</p>
+                    <p>Este certificado está protegido e disponível apenas para visualização.</p>
+                    <div class="protection-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Conteúdo protegido contra pirataria</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pdf-modal-footer">
+                <div class="pdf-info">
+                    <i class="fas fa-shield-alt"></i>
+                    <span id="pdfModalInfo">Certificado protegido - Somente visualização</span>
+                </div>
+                <div class="pdf-actions">
+                    <button class="btn-pdf-close" onclick="closePDFModal()">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return modal;
+}
+
+/**
+ * Atualiza o conteúdo do modal PDF com as informações do certificado
+ */
+function updatePDFModalContent(modal, pdfPath, title, institution, date) {
+    // Atualizar título
+    const titleElement = modal.querySelector('#pdfModalTitle span');
+    if (titleElement) {
+        titleElement.textContent = title || 'Certificado PDF';
+    }
+    
+    // Atualizar informações
+    const infoElement = modal.querySelector('#pdfModalInfo');
+    if (infoElement && institution && date) {
+        infoElement.textContent = `${institution} • ${date}`;
+    }
+    
+    // Configurar PDF embed
+    const pdfEmbed = modal.querySelector('#pdfEmbed');
+    const pdfFallback = modal.querySelector('#pdfFallback');
+    
+    if (pdfEmbed && pdfFallback) {
+        // Tentar carregar o PDF no iframe (somente visualização, totalmente protegido)
+        pdfEmbed.src = `${pdfPath}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=100&disabledownload=true`;
+        
+        // Verificar se o PDF pode ser carregado
+        pdfEmbed.onload = function() {
+            pdfEmbed.style.display = 'block';
+            pdfFallback.style.display = 'none';
+        };
+        
+        pdfEmbed.onerror = function() {
+            pdfEmbed.style.display = 'none';
+            pdfFallback.style.display = 'block';
+        };
+        
+        // Timeout para fallback em caso de problemas de carregamento
+        setTimeout(() => {
+            if (!pdfEmbed.contentDocument && !pdfEmbed.contentWindow) {
+                pdfEmbed.style.display = 'none';
+                pdfFallback.style.display = 'block';
+            }
+        }, 3000);
+    }
+}
+
+/**
+ * Fecha o modal de visualização de PDF
+ */
+function closePDFModal() {
+    const pdfModal = document.getElementById('pdfModal');
+    if (pdfModal) {
+        pdfModal.classList.remove('active');
+        
+        // Limpar o iframe para economizar recursos
+        const pdfEmbed = pdfModal.querySelector('#pdfEmbed');
+        if (pdfEmbed) {
+            pdfEmbed.src = '';
+        }
+        
+        // Remover event listener do ESC
+        document.removeEventListener('keydown', closePDFModalOnEsc);
+        
+        // Restaurar scroll da página
+        document.body.style.overflow = '';
+        
+        console.log('📄 Modal PDF fechado');
+    }
+}
+
+/**
+ * Fecha o modal PDF ao pressionar ESC
+ */
+function closePDFModalOnEsc(event) {
+    if (event.key === 'Escape') {
+        closePDFModal();
+    }
+}
+
+/**
+ * Função bloqueada - Download não permitido para PDFs
+ */
+function downloadPDFCertificate() {
+    triggerSecurityAlert('Download de PDF não autorizado!');
+    console.log('� Tentativa de download de PDF bloqueada');
+}
+
+/**
+ * Inicializa os event listeners para certificados PDF
+ */
+function initPDFCertificates() {
+    // Adicionar event listener para fechar modal clicando fora
+    document.addEventListener('click', function(event) {
+        const pdfModal = document.getElementById('pdfModal');
+        if (pdfModal && event.target === pdfModal) {
+            closePDFModal();
+        }
+    });
+    
+    // Prevenir context menu nas imagens de preview PDF
+    document.querySelectorAll('.pdf-preview').forEach(preview => {
+        preview.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Tentativa de acesso ao menu de contexto bloqueada!');
+        });
+        
+        // Prevenir drag and drop
+        preview.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Tentativa de arrastar conteúdo protegido bloqueada!');
+        });
+    });
+    
+    // Bloquear tentativas de download direto via teclado
+    document.addEventListener('keydown', function(event) {
+        // Bloquear Ctrl+S (Save As)
+        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+            const pdfModal = document.getElementById('pdfModal');
+            if (pdfModal && pdfModal.classList.contains('active')) {
+                event.preventDefault();
+                triggerSecurityAlert('Tentativa de salvar PDF bloqueada!');
+            }
+        }
+        
+        // Bloquear F12 (Developer Tools) quando PDF estiver aberto
+        if (event.key === 'F12') {
+            const pdfModal = document.getElementById('pdfModal');
+            if (pdfModal && pdfModal.classList.contains('active')) {
+                event.preventDefault();
+                triggerSecurityAlert('Tentativa de abrir DevTools bloqueada!');
+            }
+        }
+        
+        // Bloquear outras combinações perigosas
+        if ((event.ctrlKey || event.metaKey)) {
+            const pdfModal = document.getElementById('pdfModal');
+            const certModal = document.getElementById('certModal');
+            
+            if ((pdfModal && pdfModal.classList.contains('active')) || 
+                (certModal && certModal.classList.contains('active'))) {
+                
+                // Bloquear Ctrl+P (Print)
+                if (event.key === 'p') {
+                    event.preventDefault();
+                    triggerSecurityAlert('Tentativa de imprimir certificado bloqueada!');
+                }
+                
+                // Bloquear Ctrl+U (View Source)
+                if (event.key === 'u') {
+                    event.preventDefault();
+                    triggerSecurityAlert('Tentativa de ver código fonte bloqueada!');
+                }
+                
+                // Bloquear Ctrl+Shift+I (DevTools)
+                if (event.shiftKey && event.key === 'I') {
+                    event.preventDefault();
+                    triggerSecurityAlert('Tentativa de abrir DevTools bloqueada!');
+                }
+                
+                // Bloquear Ctrl+Shift+C (Inspect Element)
+                if (event.shiftKey && event.key === 'C') {
+                    event.preventDefault();
+                    triggerSecurityAlert('Tentativa de inspecionar elemento bloqueada!');
+                }
+            }
+        }
+    });
+    
+    console.log('📄 Sistema de certificados PDF inicializado');
+}
+
+/**
+ * Inicializa proteções para imagens de certificados DIO
+ */
+function initImageProtections() {
+    // Proteger todas as imagens de certificados
+    document.querySelectorAll('.cert-image img, .cert-modal-image img').forEach(img => {
+        // Context menu (clique direito)
+        img.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Tentativa de salvar imagem de certificado bloqueada!');
+        });
+        
+        // Drag and drop
+        img.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Tentativa de arrastar certificado bloqueada!');
+        });
+        
+        // Seleção de texto/imagem
+        img.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Tentativa de selecionar conteúdo protegido bloqueada!');
+        });
+        
+        // Double click (às vezes abre em nova aba)
+        img.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Ação não permitida em conteúdo protegido!');
+        });
+    });
+    
+    // Proteger containers de certificados também
+    document.querySelectorAll('.cert-card-visual, .cert-image').forEach(container => {
+        container.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Conteúdo protegido - acesso negado!');
+        });
+        
+        container.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            triggerSecurityAlert('Operação não permitida em conteúdo protegido!');
+        });
+    });
+    
+    console.log('🛡️ Proteções de imagem de certificados inicializadas');
+}
+
+/**
+ * Monitora tentativas avançadas de pirataria
+ */
+function initAdvancedSecurityMonitoring() {
+    // Detectar abertura de DevTools
+    let devtools = { open: false, orientation: null };
+    
+    setInterval(() => {
+        if (window.outerHeight - window.innerHeight > 200 || 
+            window.outerWidth - window.innerWidth > 200) {
+            if (!devtools.open) {
+                devtools.open = true;
+                const pdfModal = document.getElementById('pdfModal');
+                const certModal = document.getElementById('certModal');
+                
+                if ((pdfModal && pdfModal.classList.contains('active')) || 
+                    (certModal && certModal.classList.contains('active'))) {
+                    triggerSecurityAlert('DevTools detectadas - fechando conteúdo protegido!');
+                    if (pdfModal) closePDFModal();
+                    if (certModal) closeCertModal();
+                }
+            }
+        } else {
+            devtools.open = false;
+        }
+    }, 500);
+    
+    // Detectar tentativas de cópia via clipboard
+    document.addEventListener('copy', function(e) {
+        const pdfModal = document.getElementById('pdfModal');
+        const certModal = document.getElementById('certModal');
+        
+        if ((pdfModal && pdfModal.classList.contains('active')) || 
+            (certModal && certModal.classList.contains('active'))) {
+            e.preventDefault();
+            e.clipboardData.setData('text/plain', '🔒 Conteúdo protegido - cópia não autorizada');
+            triggerSecurityAlert('Tentativa de cópia de conteúdo protegido bloqueada!');
+        }
+    });
+    
+    // Detectar tentativas de seleção de texto em certificados
+    document.addEventListener('selectstart', function(e) {
+        if (e.target.closest('.cert-modal-image, .cert-image, .pdf-embed')) {
+            e.preventDefault();
+            triggerSecurityAlert('Seleção de conteúdo protegido não permitida!');
+        }
+    });
+    
+    // Monitorar mudanças de foco (possível screenshot)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            const pdfModal = document.getElementById('pdfModal');
+            const certModal = document.getElementById('certModal');
+            
+            if ((pdfModal && pdfModal.classList.contains('active')) || 
+                (certModal && certModal.classList.contains('active'))) {
+                // Log de possível tentativa de screenshot
+                console.warn('🚨 Possível tentativa de screenshot detectada');
+            }
+        }
+    });
+    
+    // Detectar Print Screen
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'PrintScreen') {
+            const pdfModal = document.getElementById('pdfModal');
+            const certModal = document.getElementById('certModal');
+            
+            if ((pdfModal && pdfModal.classList.contains('active')) || 
+                (certModal && certModal.classList.contains('active'))) {
+                triggerSecurityAlert('Tentativa de captura de tela detectada!');
+                // Temporariamente ocultar conteúdo
+                if (pdfModal) pdfModal.style.opacity = '0';
+                if (certModal) certModal.style.opacity = '0';
+                
+                setTimeout(() => {
+                    if (pdfModal) pdfModal.style.opacity = '1';
+                    if (certModal) certModal.style.opacity = '1';
+                }, 300);
+            }
+        }
+    });
+    
+    console.log('🔐 Monitoramento avançado de segurança ativado');
+}
+
+// ===================== EXPORTAR FUNÇÕES GLOBAIS =====================
+// Tornar algumas funções disponíveis globalmente para uso inline no HTML
+window.editProject = editProject;
+window.deleteProject = deleteProject;
+window.addProject = addProject;
+window.deleteCertificate = deleteCertificate;
+window.closeLinkedInModal = closeLinkedInModal;
+window.addLinkedInCourse = addLinkedInCourse;
+window.processBulkImport = processBulkImport;
+window.viewCertificate = viewCertificate;
+window.closeCertModal = closeCertModal;
+window.downloadCertificate = downloadCertificate;
+window.loadAllCertificates = loadAllCertificates;
+window.filterCertificates = filterCertificates;
+
+// Exportar funções PDF
+window.viewPDFCertificate = viewPDFCertificate;
+window.closePDFModal = closePDFModal;
+window.downloadPDFCertificate = downloadPDFCertificate;
+
+// Exportar funções de teste (para debug)
+window.testSecurityAlert = testSecurityAlert;
+window.playSecurityAlert = playSecurityAlert;
+window.triggerSecurityAlert = triggerSecurityAlert;
 
 // Console log para indicar que o script foi carregado
 console.log('🚀 Script principal carregado com sucesso!');
