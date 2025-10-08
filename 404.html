@@ -1,0 +1,32 @@
+---
+layout: none
+---
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Redirect</title>
+</head>
+<body>
+    <script>
+        // Redirect para garantir que o GitHub Pages funcione
+        if (window.location.pathname === '/Site-Portfolio/' && !window.location.hash) {
+            window.location.href = '/Site-Portfolio/index.html';
+        }
+    </script>
+    
+    <h1>Redirecionando...</h1>
+    <p>Se não for redirecionado automaticamente, <a href="index.html">clique aqui</a></p>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+    </style>
+</body>
+</html>
