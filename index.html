@@ -49,14 +49,19 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
+    <!-- Links de Acessibilidade -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <a href="#navigation" class="skip-link">Pular para a navegação</a>
+    <a href="#contact" class="skip-link">Pular para o contato</a>
+    
     <!-- Header/Navigation -->
-    <header class="header">
-        <nav class="navbar">
+    <header class="header" role="banner">
+        <nav class="navbar" id="navigation" role="navigation" aria-label="Navegação principal">
             <div class="nav-container">
                 <div class="nav-logo">
-                    <a href="#home">Vando Ramos</a>
+                    <a href="#home" aria-label="Página inicial - Vando Ramos">Vando Ramos</a>
                 </div>
-                <ul class="nav-menu">
+                <ul class="nav-menu" role="menubar">
                     <li class="nav-item">
                         <a href="#home" class="nav-link">Início</a>
                     </li>
@@ -88,6 +93,9 @@
         </nav>
     </header>
 
+    <!-- Conteúdo Principal -->
+    <main id="main-content" role="main">
+    
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-container">
@@ -412,7 +420,7 @@
                             <i class="fas fa-certificate"></i>
                             Ver Meus Certificados DIO
                         </a>
-                        <button id="add-cert-btn" class="btn btn-admin">
+                        <button id="add-cert-btn" class="btn btn-admin admin-only" style="display: none;">
                             <i class="fas fa-plus"></i> Adicionar Certificado
                         </button>
                         <button id="import-linkedin-btn" class="btn btn-linkedin">
@@ -490,7 +498,7 @@
                 <!-- Portfolio items will be dynamically loaded here -->
             </div>
             <div class="portfolio-admin" data-aos="fade-up">
-                <button id="add-project-btn" class="btn btn-admin">
+                <button id="add-project-btn" class="btn btn-admin admin-only" style="display: none;">
                     <i class="fas fa-plus"></i> Adicionar Projeto
                 </button>
             </div>
@@ -598,9 +606,11 @@
             </div>
         </div>
     </section>
+    
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">

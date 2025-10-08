@@ -1,6 +1,339 @@
+// ===================== SISTEMA DE AUTENTICAÇÃO ADMIN =====================
+let isAdminAuthenticated = false;
+
+// Configurações de administrador (em produção, use um backend seguro)
+const ADMIN_CONFIG = {
+    username: 'admin',
+    password: 'portfolio2025#VR', // Senha forte
+    sessionDuration: 3600000 // 1 hora em millisegundos
+};
+
+function initializeAdminSystem() {
+    // Verifica se já está logado
+    checkAdminSession();
+    
+    // Adiciona evento de duplo clique para acesso admin
+    document.addEventListener('dblclick', function(e) {
+        if (e.ctrlKey && e.altKey) {
+            showAdminLogin();
+        }
+    });
+    
+    // Adiciona atalho de teclado para acesso admin (Ctrl+Alt+A)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.altKey && e.key === 'a') {
+            e.preventDefault();
+            showAdminLogin();
+        }
+    });
+}
+
+function showAdminLogin() {
+    if (isAdminAuthenticated) {
+        if (confirm('Você já está logado como admin. Deseja fazer logout?')) {
+            adminLogout();
+        }
+        return;
+    }
+    
+    // Verificar se a conta está bloqueada
+    if (checkLockout()) {
+        return;
+    }
+    
+    const username = prompt('👤 Username Admin:');
+    if (!username) return;
+    
+    const password = prompt('🔐 Password Admin:');
+    if (!password) return;
+    
+    authenticateAdmin(username, password);
+}
+
+function authenticateAdmin(username, password) {
+    // Validação de entrada
+    if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
+        showNotification('❌ Dados inválidos!', 'error');
+        return;
+    }
+    
+    // Sanitização básica
+    username = username.trim();
+    
+    // Verificação com delay para prevenir ataques de timing
+    setTimeout(() => {
+        if (username === ADMIN_CONFIG.username && password === ADMIN_CONFIG.password) {
+            isAdminAuthenticated = true;
+            
+            // Gerar token de sessão único
+            const sessionToken = generateSecureToken();
+            
+            // Salva sessão com timestamp e token
+            const sessionData = {
+                authenticated: true,
+                timestamp: Date.now(),
+                token: sessionToken,
+                userAgent: navigator.userAgent,
+                ip: 'client-side' // Em produção, use backend real
+            };
+            
+            // Criptografar dados da sessão (simulação)
+            const encryptedSession = btoa(JSON.stringify(sessionData));
+            localStorage.setItem('adminSession', encryptedSession);
+            
+            showAdminElements();
+            showNotification('✅ Login admin realizado com sucesso!', 'success');
+            console.log('🔐 Admin authenticated successfully');
+            
+            // Log de auditoria
+            logAdminAction('LOGIN_SUCCESS', { username, timestamp: Date.now() });
+        } else {
+            showNotification('❌ Credenciais inválidas!', 'error');
+            console.warn('🔒 Failed admin authentication attempt');
+            
+            // Log de tentativa de invasão
+            logAdminAction('LOGIN_FAILED', { 
+                username, 
+                timestamp: Date.now(),
+                userAgent: navigator.userAgent 
+            });
+            
+            // Proteção contra força bruta (básica)
+            incrementFailedAttempts();
+        }
+    }, 1000 + Math.random() * 1000); // Delay variável
+}
+
+// Função para gerar token seguro
+function generateSecureToken() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+// Sistema de log de auditoria
+function logAdminAction(action, details) {
+    const logEntry = {
+        action,
+        details,
+        timestamp: new Date().toISOString(),
+        url: window.location.href
+    };
+    
+    // Em produção, enviar para servidor
+    const adminLogs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+    adminLogs.push(logEntry);
+    
+    // Manter apenas os últimos 100 logs
+    if (adminLogs.length > 100) {
+        adminLogs.splice(0, adminLogs.length - 100);
+    }
+    
+    localStorage.setItem('adminLogs', JSON.stringify(adminLogs));
+    console.log(`📝 Admin Log: ${action}`, details);
+}
+
+// Proteção contra ataques de força bruta
+let failedAttempts = 0;
+let lockoutTime = null;
+
+function incrementFailedAttempts() {
+    failedAttempts++;
+    
+    if (failedAttempts >= 3) {
+        lockoutTime = Date.now() + (5 * 60 * 1000); // 5 minutos
+        showNotification('🔒 Muitas tentativas inválidas. Tente novamente em 5 minutos.', 'error');
+        console.warn('🚨 Admin account temporarily locked due to failed attempts');
+    }
+}
+
+function checkLockout() {
+    if (lockoutTime && Date.now() < lockoutTime) {
+        const remainingTime = Math.ceil((lockoutTime - Date.now()) / 1000 / 60);
+        showNotification(`🔒 Conta bloqueada. Tente novamente em ${remainingTime} minuto(s).`, 'error');
+        return true;
+    }
+    
+    if (lockoutTime && Date.now() >= lockoutTime) {
+        failedAttempts = 0;
+        lockoutTime = null;
+    }
+    
+    return false;
+}
+
+function checkAdminSession() {
+    const encryptedSession = localStorage.getItem('adminSession');
+    if (encryptedSession) {
+        try {
+            // Descriptografar sessão
+            const sessionData = JSON.parse(atob(encryptedSession));
+            const now = Date.now();
+            
+            // Validações de segurança
+            if (!sessionData.token || !sessionData.authenticated || !sessionData.timestamp) {
+                throw new Error('Invalid session structure');
+            }
+            
+            // Verifica se a sessão ainda é válida
+            if ((now - sessionData.timestamp) < ADMIN_CONFIG.sessionDuration) {
+                // Verificação adicional de integridade
+                if (sessionData.userAgent === navigator.userAgent) {
+                    isAdminAuthenticated = true;
+                    showAdminElements();
+                    console.log('🔐 Admin session restored');
+                    
+                    // Renovar timestamp da sessão
+                    sessionData.timestamp = now;
+                    const newEncryptedSession = btoa(JSON.stringify(sessionData));
+                    localStorage.setItem('adminSession', newEncryptedSession);
+                    
+                    logAdminAction('SESSION_RESTORED', { timestamp: now });
+                } else {
+                    throw new Error('Session hijack detected - user agent mismatch');
+                }
+            } else {
+                // Sessão expirada
+                adminLogout();
+                console.log('⏰ Admin session expired');
+                logAdminAction('SESSION_EXPIRED', { timestamp: now });
+            }
+        } catch (e) {
+            localStorage.removeItem('adminSession');
+            console.error('❌ Invalid admin session data:', e.message);
+            logAdminAction('SESSION_INVALID', { 
+                error: e.message, 
+                timestamp: now 
+            });
+        }
+    }
+}
+
+function adminLogout() {
+    isAdminAuthenticated = false;
+    localStorage.removeItem('adminSession');
+    hideAdminElements();
+    showNotification('👋 Logout realizado com sucesso!', 'info');
+    
+    // Log de auditoria
+    logAdminAction('LOGOUT', { timestamp: Date.now() });
+    console.log('🔐 Admin logged out');
+}
+
+function showAdminElements() {
+    // Mostra todos os elementos de administração
+    const adminElements = document.querySelectorAll('.btn-admin, .admin-only');
+    adminElements.forEach(element => {
+        element.style.display = 'block';
+    });
+    
+    // Recarrega o portfólio para mostrar botões de edição
+    if (typeof displayProjects === 'function') {
+        displayProjects();
+    }
+    
+    // Adiciona indicador de modo admin
+    addAdminIndicator();
+}
+
+function hideAdminElements() {
+    // Esconde todos os elementos de administração
+    const adminElements = document.querySelectorAll('.btn-admin, .admin-only');
+    adminElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    // Recarrega o portfólio para esconder botões de edição
+    if (typeof displayProjects === 'function') {
+        displayProjects();
+    }
+    
+    // Remove indicador de modo admin
+    removeAdminIndicator();
+}
+
+function addAdminIndicator() {
+    // Remove indicador existente se houver
+    removeAdminIndicator();
+    
+    const indicator = document.createElement('div');
+    indicator.id = 'admin-indicator';
+    indicator.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        " onclick="adminLogout()">
+            🔐 MODO ADMIN
+        </div>
+    `;
+    document.body.appendChild(indicator);
+}
+
+function removeAdminIndicator() {
+    const indicator = document.getElementById('admin-indicator');
+    if (indicator) {
+        indicator.remove();
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Remove notificação existente
+    const existingNotification = document.getElementById('admin-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    const colors = {
+        success: '#10b981',
+        error: '#ef4444',
+        info: '#3b82f6'
+    };
+    
+    const notification = document.createElement('div');
+    notification.id = 'admin-notification';
+    notification.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            background: ${colors[type]};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+        ">
+            ${message}
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove após 3 segundos
+    setTimeout(() => {
+        if (notification) {
+            notification.remove();
+        }
+    }, 3000);
+}
+
 // Aguarda o DOM estar completamente carregado
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa todas as funcionalidades
+    initializeAdminSystem();
     initializeNavigation();
     initializeScrollEffects();
     initializePortfolio();
@@ -252,12 +585,14 @@ function createProjectElement(project) {
                         <i class="fab fa-github"></i> Código
                     </a>` : ''
                 }
-                <button onclick="editProject(${project.id})" class="portfolio-link" style="background: none; border: none; cursor: pointer;">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button onclick="deleteProject(${project.id})" class="portfolio-link" style="background: none; border: none; cursor: pointer; color: #ef4444;">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
+                ${isAdminAuthenticated ? `
+                    <button onclick="editProject(${project.id})" class="portfolio-link admin-only" style="background: none; border: none; cursor: pointer;">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button onclick="deleteProject(${project.id})" class="portfolio-link admin-only" style="background: none; border: none; cursor: pointer; color: #ef4444;">
+                        <i class="fas fa-trash"></i> Excluir
+                    </button>
+                ` : ''}
             </div>
         </div>
     `;
@@ -306,8 +641,36 @@ function addProject(projectData) {
 }
 
 function editProject(projectId) {
+    // Verificação de segurança - apenas admin pode editar
+    if (!isAdminAuthenticated) {
+        showNotification('❌ Acesso negado! Apenas administradores podem editar projetos.', 'error');
+        console.warn('🚨 Unauthorized edit attempt blocked');
+        logAdminAction('UNAUTHORIZED_EDIT_ATTEMPT', { 
+            projectId, 
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent 
+        });
+        return;
+    }
+    
+    // Validação do ID do projeto
+    if (!projectId || typeof projectId !== 'number') {
+        showNotification('❌ ID de projeto inválido!', 'error');
+        return;
+    }
+    
     const project = portfolioProjects.find(p => p.id === projectId);
-    if (!project) return;
+    if (!project) {
+        showNotification('❌ Projeto não encontrado!', 'error');
+        return;
+    }
+    
+    // Log da ação de edição
+    logAdminAction('PROJECT_EDIT_STARTED', { 
+        projectId, 
+        projectTitle: project.title,
+        timestamp: Date.now() 
+    });
     
     // Preencher o modal com os dados do projeto
     document.getElementById('project-title').value = project.title;
@@ -328,7 +691,43 @@ function editProject(projectId) {
 }
 
 function deleteProject(projectId) {
-    if (confirm('Tem certeza que deseja excluir este projeto?')) {
+    // Verificação de segurança - apenas admin pode excluir
+    if (!isAdminAuthenticated) {
+        showNotification('❌ Acesso negado! Apenas administradores podem excluir projetos.', 'error');
+        console.warn('🚨 Unauthorized delete attempt blocked');
+        logAdminAction('UNAUTHORIZED_DELETE_ATTEMPT', { 
+            projectId, 
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent 
+        });
+        return;
+    }
+    
+    // Validação do ID do projeto
+    if (!projectId || typeof projectId !== 'number') {
+        showNotification('❌ ID de projeto inválido!', 'error');
+        return;
+    }
+    
+    const project = portfolioProjects.find(p => p.id === projectId);
+    if (!project) {
+        showNotification('❌ Projeto não encontrado!', 'error');
+        return;
+    }
+    
+    // Confirmação dupla para exclusão
+    const confirmDelete = confirm(`Tem certeza que deseja excluir o projeto "${project.title}"?`);
+    if (!confirmDelete) return;
+    
+    const finalConfirm = confirm('⚠️ ATENÇÃO: Esta ação não pode ser desfeita! Confirma a exclusão?');
+    if (finalConfirm) {
+        // Log antes da exclusão
+        logAdminAction('PROJECT_DELETED', { 
+            projectId, 
+            projectTitle: project.title,
+            timestamp: Date.now() 
+        });
+        
         portfolioProjects = portfolioProjects.filter(p => p.id !== projectId);
         saveProjects();
         renderPortfolioItems();
