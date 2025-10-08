@@ -1592,6 +1592,530 @@ function closeProtectionModal() {
     }
 }
 
+// ===================== SISTEMA HÍBRIDO DE CERTIFICADOS =====================
+let certificatesLoaded = false;
+let currentFilter = 'all';
+
+// Base de dados dos certificados adicionais
+const additionalCertificatesData = {
+    bootcamps: [
+        {
+            title: "Bootcamp Machine Learning",
+            institution: "Digital Innovation One (DIO)",
+            year: "2024",
+            hours: "80+ horas",
+            category: "bootcamp",
+            icon: "fas fa-brain",
+            skills: ["Python", "Scikit-learn", "TensorFlow"],
+            badge: "dio"
+        },
+        {
+            title: "Bootcamp Full Stack Developer",
+            institution: "Digital Innovation One (DIO)",
+            year: "2024",
+            hours: "150+ horas",
+            category: "bootcamp",
+            icon: "fas fa-layers",
+            skills: ["React", "Node.js", "MongoDB"],
+            badge: "dio"
+        },
+        {
+            title: "Bootcamp DevOps Professional",
+            institution: "Digital Innovation One (DIO)",
+            year: "2024",
+            hours: "90+ horas",
+            category: "bootcamp",
+            icon: "fas fa-infinity",
+            skills: ["Docker", "Kubernetes", "Jenkins"],
+            badge: "dio"
+        }
+    ],
+    certifications: [
+        {
+            title: "Azure Developer Associate (AZ-204)",
+            institution: "Microsoft",
+            year: "Em andamento",
+            category: "certification",
+            icon: "fab fa-microsoft",
+            skills: ["Azure", "C#", "REST APIs"],
+            badge: "microsoft"
+        },
+        {
+            title: "AWS Cloud Practitioner",
+            institution: "Amazon Web Services",
+            year: "Planejado",
+            category: "certification",
+            icon: "fab fa-aws",
+            skills: ["AWS", "Cloud Computing", "S3"],
+            badge: "aws"
+        }
+    ],
+    courses: [
+        {
+            title: "Docker & Kubernetes",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "45 horas",
+            category: "course",
+            icon: "fas fa-cube",
+            skills: ["Docker", "Kubernetes", "DevOps"],
+            badge: "dio"
+        },
+        {
+            title: "Segurança em APIs",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "30 horas",
+            category: "course",
+            icon: "fas fa-shield-alt",
+            skills: ["API Security", "OAuth", "JWT"],
+            badge: "dio"
+        },
+        {
+            title: "Fundamentos de Banco de Dados",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "40 horas",
+            category: "course",
+            icon: "fas fa-database",
+            skills: ["SQL", "MySQL", "PostgreSQL"],
+            badge: "dio"
+        },
+        {
+            title: "JavaScript Moderno",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "60 horas",
+            category: "course",
+            icon: "fab fa-js-square",
+            skills: ["ES6+", "React", "Node.js"],
+            badge: "dio"
+        },
+        {
+            title: "Python para Data Science",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "55 horas",
+            category: "course",
+            icon: "fab fa-python",
+            skills: ["Python", "Pandas", "NumPy"],
+            badge: "dio"
+        },
+        {
+            title: "Git e GitHub",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "25 horas",
+            category: "course",
+            icon: "fab fa-git-alt",
+            skills: ["Git", "GitHub", "Version Control"],
+            badge: "dio"
+        },
+        {
+            title: "Linux Essentials",
+            institution: "Digital Innovation One",
+            year: "2024",
+            hours: "35 horas",
+            category: "course",
+            icon: "fab fa-linux",
+            skills: ["Linux", "Terminal", "Shell Script"],
+            badge: "dio"
+        }
+    ]
+};
+
+// Função para carregar todos os certificados
+function loadAllCertificates() {
+    if (certificatesLoaded) return;
+    
+    const loadingBtn = document.getElementById('loadMoreCerts');
+    const additionalContainer = document.getElementById('additionalCerts');
+    const skeleton = document.getElementById('loadingSkeleton');
+    
+    // Mostrar loading
+    loadingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando certificados...';
+    loadingBtn.disabled = true;
+    additionalContainer.style.display = 'block';
+    skeleton.style.display = 'flex';
+    
+    // Simular loading (para melhor UX)
+    setTimeout(() => {
+        renderAllCertificates();
+        skeleton.style.display = 'none';
+        loadingBtn.style.display = 'none';
+        certificatesLoaded = true;
+        updateCertificateCounts();
+        
+        // Animação suave
+        const newItems = additionalContainer.querySelectorAll('.cert-item');
+        newItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 1500);
+}
+
+// Função para renderizar todos os certificados adicionais
+function renderAllCertificates() {
+    const container = document.getElementById('additionalCerts');
+    let html = '';
+    
+    // Bootcamps adicionais
+    html += `
+        <div class="cert-category" data-aos="fade-up">
+            <h4><i class="fas fa-rocket"></i> Bootcamps Adicionais</h4>
+            <div class="certifications-grid">
+    `;
+    
+    additionalCertificatesData.bootcamps.forEach(cert => {
+        html += generateCertificateHTML(cert);
+    });
+    
+    html += `</div></div>`;
+    
+    // Certificações adicionais
+    html += `
+        <div class="cert-category" data-aos="fade-up" data-aos-delay="200">
+            <h4><i class="fas fa-certificate"></i> Certificações Técnicas</h4>
+            <div class="certifications-grid">
+    `;
+    
+    additionalCertificatesData.certifications.forEach(cert => {
+        html += generateCertificateHTML(cert);
+    });
+    
+    html += `</div></div>`;
+    
+    // Cursos adicionais
+    html += `
+        <div class="cert-category" data-aos="fade-up" data-aos-delay="400">
+            <h4><i class="fas fa-graduation-cap"></i> Cursos Complementares</h4>
+            <div class="certifications-grid">
+    `;
+    
+    additionalCertificatesData.courses.forEach(cert => {
+        html += generateCertificateHTML(cert);
+    });
+    
+    html += `</div></div>`;
+    
+    container.innerHTML = html;
+    
+    // Re-inicializar AOS para novas animações
+    if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+    }
+}
+
+// Função para gerar HTML de um certificado
+function generateCertificateHTML(cert) {
+    const skillTags = cert.skills ? cert.skills.map(skill => 
+        `<span class="skill-tag">${skill}</span>`
+    ).join('') : '';
+    
+    const hours = cert.hours ? `<span class="cert-hours">${cert.hours}</span>` : '';
+    
+    return `
+        <div class="cert-item ${cert.category}" data-category="${cert.category}" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+            <div class="cert-badge ${cert.badge}">
+                <i class="${cert.icon}"></i>
+            </div>
+            <div class="cert-info">
+                <h5>${cert.title}</h5>
+                <p>${cert.institution} • ${cert.year}</p>
+                ${hours}
+                ${skillTags ? `<div class="cert-skills">${skillTags}</div>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+// Função para filtrar certificados por categoria
+function filterCertificates(category) {
+    currentFilter = category;
+    
+    // Atualizar botões ativos
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    
+    // Filtrar certificados visíveis
+    const allCertItems = document.querySelectorAll('.cert-item');
+    
+    allCertItems.forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+            item.style.display = 'block';
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+            }, 50);
+        } else {
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                item.style.display = 'none';
+            }, 300);
+        }
+    });
+}
+
+// Função para contar certificados por categoria
+function updateCertificateCounts() {
+    const counts = {
+        all: 0,
+        bootcamp: 0,
+        certification: 0,
+        course: 0
+    };
+    
+    // Contar certificados principais
+    document.querySelectorAll('#main-certs .cert-item').forEach(item => {
+        counts.all++;
+        counts[item.dataset.category]++;
+    });
+    
+    // Contar certificados adicionais se carregados
+    if (certificatesLoaded) {
+        document.querySelectorAll('#additionalCerts .cert-item').forEach(item => {
+            counts.all++;
+            counts[item.dataset.category]++;
+        });
+    } else {
+        // Contar da base de dados
+        counts.all += additionalCertificatesData.bootcamps.length + 
+                     additionalCertificatesData.certifications.length + 
+                     additionalCertificatesData.courses.length;
+        counts.bootcamp += additionalCertificatesData.bootcamps.length;
+        counts.certification += additionalCertificatesData.certifications.length;
+        counts.course += additionalCertificatesData.courses.length;
+    }
+    
+    // Atualizar contadores na UI
+    Object.keys(counts).forEach(category => {
+        const countElement = document.getElementById(`count-${category}`);
+        if (countElement) {
+            countElement.textContent = counts[category];
+        }
+    });
+}
+
+// ===================== LAZY LOADING E PERFORMANCE =====================
+
+// Intersection Observer para lazy loading
+let imageObserver;
+let certificateObserver;
+
+function initializeLazyLoading() {
+    // Observer para imagens
+    imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                    
+                    // Adicionar animação de fade-in
+                    img.style.opacity = '0';
+                    img.onload = () => {
+                        img.style.transition = 'opacity 0.5s ease';
+                        img.style.opacity = '1';
+                    };
+                }
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+    });
+    
+    // Observer para certificados (animação na entrada)
+    certificateObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                certificateObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '20px',
+        threshold: 0.15
+    });
+    
+    // Aplicar observers às imagens existentes
+    applyLazyLoadingToImages();
+}
+
+function applyLazyLoadingToImages() {
+    // Lazy loading para imagens de certificados
+    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+        if (img.src && !img.dataset.observed) {
+            // Para imagens já carregadas, aplicar intersection observer para animação
+            img.dataset.observed = 'true';
+            const parent = img.closest('.cert-item, .cert-card-visual');
+            if (parent) {
+                certificateObserver.observe(parent);
+            }
+        }
+    });
+    
+    // Para novas imagens que serão carregadas dinamicamente
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+
+// Função para otimizar performance do carregamento
+function optimizePerformance() {
+    // Preload de recursos críticos
+    preloadCriticalResources();
+    
+    // Defer de recursos não críticos
+    deferNonCriticalResources();
+    
+    // Compression de dados
+    compressStorageData();
+}
+
+function preloadCriticalResources() {
+    // Preload das imagens principais de certificados
+    const criticalImages = [
+        'https://assets.dio.me/4hKpXBQzPSNkWjhv-aLrgYk9JHN49iNpp6lYtWmBn-Q/f:webp/h:320/q:70/w:450/L2NlcnRpZmljYXRlcy9jb3Zlci8wQkEwM0xMWC5qcGc'
+    ];
+    
+    criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+    });
+}
+
+function deferNonCriticalResources() {
+    // Defer do carregamento de certificados adicionais
+    setTimeout(() => {
+        if (!certificatesLoaded) {
+            // Pre-processar dados dos certificados para carregamento mais rápido
+            preprocessCertificateData();
+        }
+    }, 2000);
+}
+
+function preprocessCertificateData() {
+    // Criar um cache dos dados processados
+    const processedData = {
+        totalCertificates: getTotalCertificateCount(),
+        categories: getCategoryCounts(),
+        timestamp: Date.now()
+    };
+    
+    try {
+        localStorage.setItem('cert_cache', JSON.stringify(processedData));
+    } catch (e) {
+        console.warn('LocalStorage não disponível para cache');
+    }
+}
+
+function getTotalCertificateCount() {
+    return additionalCertificatesData.bootcamps.length + 
+           additionalCertificatesData.certifications.length + 
+           additionalCertificatesData.courses.length + 3; // 3 principais
+}
+
+function getCategoryCounts() {
+    return {
+        all: getTotalCertificateCount(),
+        bootcamp: additionalCertificatesData.bootcamps.length + 1,
+        certification: additionalCertificatesData.certifications.length + 1,
+        course: additionalCertificatesData.courses.length + 1
+    };
+}
+
+function compressStorageData() {
+    // Limpar dados antigos do localStorage
+    try {
+        const keys = Object.keys(localStorage);
+        keys.forEach(key => {
+            if (key.startsWith('cert_') || key.startsWith('old_')) {
+                const data = JSON.parse(localStorage.getItem(key));
+                if (data.timestamp && Date.now() - data.timestamp > 86400000) { // 24 horas
+                    localStorage.removeItem(key);
+                }
+            }
+        });
+    } catch (e) {
+        console.warn('Erro ao limpar cache:', e);
+    }
+}
+
+// Debounce para filtros
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+const debouncedFilter = debounce(filterCertificates, 150);
+
+// Inicializar sistema híbrido quando DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar lazy loading
+    if ('IntersectionObserver' in window) {
+        initializeLazyLoading();
+    }
+    
+    // Otimizar performance
+    optimizePerformance();
+    
+    // Adicionar eventos aos filtros (com debounce)
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            debouncedFilter(this.dataset.category);
+        });
+    });
+    
+    // Atualizar contadores iniciais
+    setTimeout(() => {
+        updateCertificateCounts();
+        applyLazyLoadingToImages();
+    }, 100);
+    
+    // Preload hover states para melhor UX
+    setTimeout(preloadHoverStates, 1000);
+});
+
+function preloadHoverStates() {
+    // Pre-criar elementos hover para transições mais suaves
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .cert-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // ===================== EXPORTAR FUNÇÕES GLOBAIS =====================
 // Tornar algumas funções disponíveis globalmente para uso inline no HTML
 window.editProject = editProject;
@@ -1604,6 +2128,8 @@ window.processBulkImport = processBulkImport;
 window.viewCertificate = viewCertificate;
 window.closeCertModal = closeCertModal;
 window.downloadCertificate = downloadCertificate;
+window.loadAllCertificates = loadAllCertificates;
+window.filterCertificates = filterCertificates;
 
 // Console log para indicar que o script foi carregado
 console.log('🚀 Script principal carregado com sucesso!');

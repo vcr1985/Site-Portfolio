@@ -339,56 +339,66 @@
                 <div class="certifications" data-aos="fade-left" data-aos-delay="200">
                     <h3>Certificações & Cursos</h3>
                     
-                    <!-- Bootcamps -->
-                    <div class="cert-category">
-                        <h4><i class="fas fa-rocket"></i> Bootcamps</h4>
-                        <div class="certifications-grid">
-                            <div class="cert-item bootcamp">
+                    <!-- Filtros de Categoria -->
+                    <div class="cert-filters">
+                        <button class="filter-btn active" data-category="all">
+                            <i class="fas fa-th-large"></i> Todos <span class="count" id="count-all">0</span>
+                        </button>
+                        <button class="filter-btn" data-category="bootcamp">
+                            <i class="fas fa-rocket"></i> Bootcamps <span class="count" id="count-bootcamp">0</span>
+                        </button>
+                        <button class="filter-btn" data-category="certification">
+                            <i class="fas fa-certificate"></i> Certificações <span class="count" id="count-certification">0</span>
+                        </button>
+                        <button class="filter-btn" data-category="course">
+                            <i class="fas fa-graduation-cap"></i> Cursos <span class="count" id="count-course">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Certificados Principais (Sempre Visíveis) -->
+                    <div class="main-certificates">
+                        <h4><i class="fas fa-star"></i> Certificações em Destaque</h4>
+                        <div class="certifications-grid" id="main-certs">
+                            <!-- Bootcamp Principal -->
+                            <div class="cert-item featured bootcamp" data-category="bootcamp">
                                 <div class="cert-badge dio">
                                     <i class="fas fa-laptop-code"></i>
+                                    <span class="featured-badge">⭐</span>
                                 </div>
                                 <div class="cert-info">
                                     <h5>Bootcamp .NET Developer</h5>
                                     <p>Digital Innovation One (DIO) • 2024</p>
                                     <span class="cert-hours">120+ horas</span>
+                                    <div class="cert-skills">
+                                        <span class="skill-tag">C#</span>
+                                        <span class="skill-tag">.NET Core</span>
+                                        <span class="skill-tag">Entity Framework</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="cert-item bootcamp">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Bootcamp Machine Learning</h5>
-                                    <p>Digital Innovation One (DIO) • 2024</p>
-                                    <span class="cert-hours">80+ horas</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Certificações Técnicas -->
-                    <div class="cert-category">
-                        <h4><i class="fas fa-certificate"></i> Certificações Técnicas</h4>
-                        <div class="certifications-grid">
-                            <div class="cert-item">
+                            <!-- Certificação Principal -->
+                            <div class="cert-item featured certification" data-category="certification">
                                 <div class="cert-badge microsoft">
                                     <i class="fab fa-microsoft"></i>
+                                    <span class="featured-badge">⭐</span>
                                 </div>
                                 <div class="cert-info">
                                     <h5>Azure AI Fundamentals (AI-900)</h5>
                                     <p>Microsoft • Em andamento</p>
+                                    <div class="cert-skills">
+                                        <span class="skill-tag">Azure AI</span>
+                                        <span class="skill-tag">Machine Learning</span>
+                                        <span class="skill-tag">Cognitive Services</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Cursos Complementares DIO -->
-                    <div class="cert-category">
-                        <h4><i class="fas fa-graduation-cap"></i> Cursos Complementares DIO</h4>
-                        <div class="certifications-grid">
-                            <div class="cert-item dio-cert">
+                            <!-- Curso Principal -->
+                            <div class="cert-item featured course" data-category="course">
                                 <div class="cert-badge dio">
                                     <i class="fas fa-database"></i>
+                                    <span class="featured-badge">⭐</span>
                                 </div>
                                 <div class="cert-info">
                                     <h5>Banco de Dados SQL Server</h5>
@@ -401,38 +411,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-cube"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Docker & Kubernetes</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">45 horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">Docker</span>
-                                        <span class="skill-tag">Kubernetes</span>
-                                        <span class="skill-tag">DevOps</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Segurança em APIs</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">30 horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">API Security</span>
-                                        <span class="skill-tag">OAuth</span>
-                                        <span class="skill-tag">JWT</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+                    <!-- Botão Ver Todos -->
+                    <div class="load-more-section">
+                        <button class="btn-load-more" id="loadMoreCerts" onclick="loadAllCertificates()">
+                            <i class="fas fa-plus-circle"></i> Ver Todos os Certificados
+                            <span class="load-count">(+12 certificados)</span>
+                        </button>
+                    </div>
+
+                    <!-- Container para Certificados Adicionais (Carregados sob demanda) -->
+                    <div class="additional-certificates" id="additionalCerts" style="display: none;">
+                        <div class="loading-skeleton" id="loadingSkeleton">
+                            <div class="skeleton-item"></div>
+                            <div class="skeleton-item"></div>
+                            <div class="skeleton-item"></div>
+                        </div>
+                    </div>
+
+
                     
                     <!-- Galeria de Certificados DIO com Imagens -->
                     <div class="cert-category">
@@ -470,72 +469,7 @@
                         </div>
                     </div>
                     
-                    <!-- Certificados DIO Públicos -->
-                    <div class="cert-category">
-                        <h4><i class="fas fa-code"></i> Certificados DIO - Digital Innovation One</h4>
-                        <div class="dio-certificates">
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-laptop-code"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Bootcamp .NET Developer</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">120+ horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">C#</span>
-                                        <span class="skill-tag">.NET Core</span>
-                                        <span class="skill-tag">Entity Framework</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Bootcamp Machine Learning</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">80+ horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">Python</span>
-                                        <span class="skill-tag">Scikit-learn</span>
-                                        <span class="skill-tag">TensorFlow</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>Fundamentos de Banco de Dados</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">40 horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">SQL</span>
-                                        <span class="skill-tag">MySQL</span>
-                                        <span class="skill-tag">PostgreSQL</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cert-item dio-cert">
-                                <div class="cert-badge dio">
-                                    <i class="fab fa-js-square"></i>
-                                </div>
-                                <div class="cert-info">
-                                    <h5>JavaScript Moderno</h5>
-                                    <p>Digital Innovation One • 2024</p>
-                                    <span class="cert-hours">60 horas</span>
-                                    <div class="cert-skills">
-                                        <span class="skill-tag">ES6+</span>
-                                        <span class="skill-tag">React</span>
-                                        <span class="skill-tag">Node.js</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                     
                     <div class="credly-profile">
                         <div class="profile-note">
