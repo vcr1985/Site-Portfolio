@@ -1440,6 +1440,158 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ===================== VISUALIZAÇÃO DE CERTIFICADOS =====================
+function viewCertificate(imageUrl) {
+    // Criar modal para visualizar certificado
+    const modal = document.createElement('div');
+    modal.className = 'cert-modal';
+    modal.innerHTML = `
+        <div class="cert-modal-content">
+            <span class="cert-modal-close" onclick="closeCertModal()">&times;</span>
+            <div class="cert-modal-header">
+                <h3><i class="fas fa-certificate"></i> Certificado DIO</h3>
+                <div class="cert-modal-badges">
+                    <span class="cert-badge-small verified">
+                        <i class="fas fa-check-circle"></i> Verificado
+                    </span>
+                    <span class="cert-badge-small dio-brand">
+                        <i class="fas fa-code"></i> Digital Innovation One
+                    </span>
+                </div>
+            </div>
+            <div class="cert-modal-image">
+                <img src="${imageUrl}" alt="Certificado DIO" id="cert-modal-img" 
+                     oncontextmenu="return false;" 
+                     ondragstart="return false;" 
+                     onselectstart="return false;">
+            </div>
+            <div class="cert-modal-footer">
+                <p><i class="fas fa-info-circle"></i> Este certificado é verificável através da plataforma oficial da DIO</p>
+                <div class="cert-modal-actions">
+                    ${isAdminAuthenticated ? `
+                        <button onclick="downloadCertificate('${imageUrl}')" class="btn-cert-download">
+                            <i class="fas fa-download"></i> Baixar Certificado
+                        </button>
+                    ` : `
+                        <button onclick="showCertificateProtectionMessage()" class="btn-cert-protected">
+                            <i class="fas fa-shield-alt"></i> Certificado Protegido
+                        </button>
+                    `}
+                    <button onclick="closeCertModal()" class="btn-cert-close">
+                        <i class="fas fa-times"></i> Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Animação de entrada
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    
+    // Fechar com ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCertModal();
+        }
+    });
+}
+
+function closeCertModal() {
+    const modal = document.querySelector('.cert-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+function downloadCertificate(imageUrl) {
+    // Verificação de segurança - apenas admin pode baixar certificados
+    if (!isAdminAuthenticated) {
+        showNotification('🔒 Acesso negado! Apenas o proprietário pode baixar certificados.', 'error');
+        console.warn('🚨 Unauthorized certificate download attempt blocked');
+        logAdminAction('UNAUTHORIZED_DOWNLOAD_ATTEMPT', { 
+            imageUrl, 
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent 
+        });
+        
+        // Mostrar mensagem educativa
+        showCertificateProtectionMessage();
+        return;
+    }
+    
+    // Log da ação de download autorizada
+    logAdminAction('CERTIFICATE_DOWNLOADED', { 
+        imageUrl, 
+        timestamp: Date.now() 
+    });
+    
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = 'certificado-dio-vando-ramos.jpg';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showNotification('✅ Certificado baixado com sucesso!', 'success');
+}
+
+function showCertificateProtectionMessage() {
+    const modal = document.createElement('div');
+    modal.className = 'protection-modal';
+    modal.innerHTML = `
+        <div class="protection-modal-content">
+            <div class="protection-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>🔒 Certificados Protegidos</h3>
+            <p>
+                Os certificados neste portfólio são propriedade intelectual protegida e 
+                estão disponíveis apenas para <strong>visualização</strong>.
+            </p>
+            <p>
+                <i class="fas fa-info-circle"></i> 
+                Para verificar a autenticidade, acesse diretamente a 
+                <a href="https://web.dio.me" target="_blank">plataforma oficial da DIO</a>.
+            </p>
+            <div class="protection-actions">
+                <button onclick="closeProtectionModal()" class="btn-protection-ok">
+                    <i class="fas fa-check"></i> Entendido
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Animação de entrada
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    
+    // Auto-fechar após 5 segundos
+    setTimeout(() => {
+        closeProtectionModal();
+    }, 5000);
+}
+
+function closeProtectionModal() {
+    const modal = document.querySelector('.protection-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
 // ===================== EXPORTAR FUNÇÕES GLOBAIS =====================
 // Tornar algumas funções disponíveis globalmente para uso inline no HTML
 window.editProject = editProject;
@@ -1449,6 +1601,9 @@ window.deleteCertificate = deleteCertificate;
 window.closeLinkedInModal = closeLinkedInModal;
 window.addLinkedInCourse = addLinkedInCourse;
 window.processBulkImport = processBulkImport;
+window.viewCertificate = viewCertificate;
+window.closeCertModal = closeCertModal;
+window.downloadCertificate = downloadCertificate;
 
 // Console log para indicar que o script foi carregado
 console.log('🚀 Script principal carregado com sucesso!');
