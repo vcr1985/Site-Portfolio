@@ -1557,6 +1557,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===================== VISUALIZAÇÃO DE CERTIFICADOS =====================
 function viewCertificate(imageUrl) {
+    // Verificar se a URL existe antes de abrir o modal
+    console.log('🔍 Tentando abrir certificado:', imageUrl);
+    
     // Criar modal para visualizar certificado
     const modal = document.createElement('div');
     modal.className = 'cert-modal';
@@ -1574,11 +1577,24 @@ function viewCertificate(imageUrl) {
                     </span>
                 </div>
             </div>
-            <div class="cert-modal-image">
+            <div class="cert-modal-image" id="cert-modal-container">
+                <div class="cert-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Carregando certificado...</p>
+                </div>
                 <img src="${imageUrl}" alt="Certificado DIO" id="cert-modal-img" 
                      oncontextmenu="return false;" 
                      ondragstart="return false;" 
-                     onselectstart="return false;">
+                     onselectstart="return false;"
+                     style="display: none;">
+                <div class="cert-error" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Erro ao carregar certificado</h4>
+                    <p>Este certificado pode estar temporariamente indisponível.</p>
+                    <button onclick="reloadCertificate('${imageUrl}')" class="btn btn-primary">
+                        <i class="fas fa-redo"></i> Tentar Novamente
+                    </button>
+                </div>
             </div>
             <div class="cert-modal-footer">
                 <p><i class="fas fa-info-circle"></i> Este certificado é verificável através da plataforma oficial da DIO</p>
@@ -1602,6 +1618,9 @@ function viewCertificate(imageUrl) {
     
     document.body.appendChild(modal);
     
+    // Inicializar tratamento de certificados
+    initCertificateModal(modal, imageUrl);
+    
     // Animação de entrada
     setTimeout(() => {
         modal.classList.add('active');
@@ -1623,6 +1642,63 @@ function closeCertModal() {
             modal.remove();
         }, 300);
     }
+}
+
+// Função para recarregar certificado com erro
+function reloadCertificate(imageUrl) {
+    console.log('🔄 Recarregando certificado:', imageUrl);
+    const modal = document.querySelector('.cert-modal');
+    if (!modal) return;
+    
+    const img = modal.querySelector('#cert-modal-img');
+    const loading = modal.querySelector('.cert-loading');
+    const errorDiv = modal.querySelector('.cert-error');
+    
+    // Resetar estado
+    loading.style.display = 'block';
+    errorDiv.style.display = 'none';
+    img.style.display = 'none';
+    
+    // Forçar reload da imagem
+    img.src = '';
+    setTimeout(() => {
+        img.src = imageUrl + '?t=' + Date.now(); // Cache busting
+    }, 100);
+}
+
+// Expor função globalmente
+window.reloadCertificate = reloadCertificate;
+
+// Inicializar tratamento de certificados quando modal é criado
+function initCertificateModal(modal, imageUrl) {
+    const img = modal.querySelector('#cert-modal-img');
+    const loading = modal.querySelector('.cert-loading');
+    const errorDiv = modal.querySelector('.cert-error');
+    
+    if (!img || !loading || !errorDiv) return;
+    
+    img.onload = function() {
+        console.log('✅ Certificado carregado com sucesso');
+        loading.style.display = 'none';
+        errorDiv.style.display = 'none';
+        img.style.display = 'block';
+    };
+    
+    img.onerror = function() {
+        console.error('❌ Erro ao carregar certificado:', imageUrl);
+        loading.style.display = 'none';
+        img.style.display = 'none';
+        errorDiv.style.display = 'block';
+        showNotification('❌ Erro ao carregar certificado. Tente novamente.', 'error');
+    };
+    
+    // Timeout para mostrar erro se demorar muito
+    setTimeout(() => {
+        if (loading.style.display !== 'none') {
+            console.warn('⏱️ Timeout no carregamento do certificado');
+            img.onerror();
+        }
+    }, 10000); // 10 segundos
 }
 
 function downloadCertificate(imageUrl) {

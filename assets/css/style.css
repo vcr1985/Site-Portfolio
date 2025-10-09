@@ -1381,6 +1381,47 @@ img[data-src]:not([src]) {
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
+.cert-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.cert-loading i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.cert-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+}
+
+.cert-error i {
+    font-size: 3rem;
+    color: #f59e0b;
+    margin-bottom: 1rem;
+}
+
+.cert-error h4 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.cert-error p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
 .cert-modal-footer {
     padding: 1rem 2rem 2rem;
     border-top: 1px solid #eee;
