@@ -332,6 +332,9 @@ function showNotification(message, type = 'info') {
 
 // Aguarda o DOM estar completamente carregado
 document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se retornou do Formspree
+    checkFormspreeReturn();
+    
     // Inicializa todas as funcionalidades
     initializeAdminSystem();
     initializeNavigation();
@@ -760,7 +763,6 @@ function handleContactSubmit(e) {
     
     const form = e.target;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
     
     // Validar todos os campos
     if (!validateForm(form)) {
@@ -768,18 +770,43 @@ function handleContactSubmit(e) {
         return;
     }
     
-    // Simular envio (aqui você implementaria a integração com seu backend)
+    // Mostrar loading
     showLoading(form);
     
-    // Simular delay de envio
-    setTimeout(() => {
+    // Enviar para Formspree
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => {
         hideLoading(form);
-        showNotification('Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
-        form.reset();
         
-        // Salvar lead no localStorage (para demonstração)
-        saveLead(data);
-    }, 2000);
+        if (response.ok) {
+            showNotification('✅ Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
+            form.reset();
+            
+            // Salvar lead no localStorage para backup
+            const data = Object.fromEntries(formData);
+            saveLead(data);
+            
+            // Trigger security alert para demonstrar funcionamento
+            console.log('📧 Email enviado via Formspree para: ramosvando@gmail.com');
+        } else {
+            response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                    showNotification('❌ Erro nos dados: ' + data.errors.map(error => error.message).join(', '), 'error');
+                } else {
+                    showNotification('❌ Erro ao enviar mensagem. Tente novamente.', 'error');
+                }
+            });
+        }
+    }).catch(error => {
+        hideLoading(form);
+        console.error('Erro no envio:', error);
+        showNotification('❌ Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+    });
 }
 
 function validateForm(form) {
@@ -873,6 +900,21 @@ function saveLead(data) {
         id: Date.now()
     });
     localStorage.setItem('leads', JSON.stringify(leads));
+}
+
+// Verificar se retornou do Formspree
+function checkFormspreeReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('sent') === 'true') {
+        // Remover o parâmetro da URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+        
+        // Mostrar notificação de sucesso
+        setTimeout(() => {
+            showNotification('✅ Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
+        }, 500);
+    }
 }
 
 // ===================== MODAL =====================

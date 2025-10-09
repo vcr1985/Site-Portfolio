@@ -939,7 +939,7 @@
                     </div>
                 </div>
                 <div class="contact-form-container" data-aos="fade-left" data-aos-delay="200">
-                    <form id="contact-form" class="contact-form">
+                    <form id="contact-form" class="contact-form" action="https://formspree.io/f/xzzpjzol" method="POST">
                         <div class="form-group">
                             <label for="name">Nome Completo *</label>
                             <input type="text" id="name" name="name" required>
@@ -985,6 +985,11 @@
                             <textarea id="message" name="message" rows="5" required 
                                 placeholder="Conte-me mais sobre seu projeto..."></textarea>
                         </div>
+                        <!-- Campo hidden para o Formspree -->
+                        <input type="hidden" name="_replyto" value="ramosvando@gmail.com">
+                        <input type="hidden" name="_subject" value="Nova mensagem do site - Portfólio">
+                        <input type="hidden" name="_next" value="https://vandoramos.netlify.app/?sent=true">
+                        
                         <button type="submit" class="btn btn-primary btn-full">
                             <i class="fas fa-paper-plane"></i>
                             Enviar Mensagem
