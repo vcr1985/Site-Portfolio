@@ -939,7 +939,7 @@
                     </div>
                 </div>
                 <div class="contact-form-container" data-aos="fade-left" data-aos-delay="200">
-                    <form id="contact-form" class="contact-form" action="https://formspree.io/f/xzzpjzol" method="POST">
+                    <form id="contact-form" class="contact-form">
                         <div class="form-group">
                             <label for="name">Nome Completo *</label>
                             <input type="text" id="name" name="name" required>
@@ -985,15 +985,31 @@
                             <textarea id="message" name="message" rows="5" required 
                                 placeholder="Conte-me mais sobre seu projeto..."></textarea>
                         </div>
-                        <!-- Campo hidden para o Formspree -->
-                        <input type="hidden" name="_replyto" value="ramosvando@gmail.com">
-                        <input type="hidden" name="_subject" value="Nova mensagem do site - Portfólio">
-                        <input type="hidden" name="_next" value="https://vandoramos.netlify.app/?sent=true">
                         
                         <button type="submit" class="btn btn-primary btn-full">
                             <i class="fas fa-paper-plane"></i>
                             Enviar Mensagem
                         </button>
+                        
+                        <!-- Métodos alternativos de contato -->
+                        <div class="alternative-contact" style="margin-top: 2rem; text-align: center;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <i class="fas fa-info-circle"></i> 
+                                Ou entre em contato diretamente:
+                            </p>
+                            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <a href="https://wa.me/5511948916368?text=Olá! Vi seu portfólio e gostaria de conversar sobre um projeto." 
+                                   class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp"></i>
+                                    WhatsApp
+                                </a>
+                                <a href="mailto:ramosvando@gmail.com?subject=Contato do Portfólio" 
+                                   class="btn btn-outline">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Direto
+                                </a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

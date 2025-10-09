@@ -332,9 +332,6 @@ function showNotification(message, type = 'info') {
 
 // Aguarda o DOM estar completamente carregado
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar se retornou do Formspree
-    checkFormspreeReturn();
-    
     // Inicializa todas as funcionalidades
     initializeAdminSystem();
     initializeNavigation();
@@ -763,6 +760,7 @@ function handleContactSubmit(e) {
     
     const form = e.target;
     const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
     
     // Validar todos os campos
     if (!validateForm(form)) {
@@ -773,40 +771,113 @@ function handleContactSubmit(e) {
     // Mostrar loading
     showLoading(form);
     
-    // Enviar para Formspree
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    }).then(response => {
+    // Salvar dados primeiro
+    saveLead(data);
+    
+    // Simular processamento
+    setTimeout(() => {
         hideLoading(form);
         
-        if (response.ok) {
-            showNotification('✅ Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
-            form.reset();
-            
-            // Salvar lead no localStorage para backup
-            const data = Object.fromEntries(formData);
-            saveLead(data);
-            
-            // Trigger security alert para demonstrar funcionamento
-            console.log('📧 Email enviado via Formspree para: ramosvando@gmail.com');
-        } else {
-            response.json().then(data => {
-                if (Object.hasOwn(data, 'errors')) {
-                    showNotification('❌ Erro nos dados: ' + data.errors.map(error => error.message).join(', '), 'error');
-                } else {
-                    showNotification('❌ Erro ao enviar mensagem. Tente novamente.', 'error');
-                }
-            });
+        // Mostrar opções de contato
+        showContactOptions(data);
+        
+        // Limpar formulário
+        form.reset();
+        
+        console.log('📧 Dados salvos e opções de contato apresentadas');
+    }, 1000);
+}
+
+function showContactOptions(data) {
+    // Criar o corpo do email formatado
+    const emailBody = `Nova mensagem do portfólio:
+
+Nome: ${data.name}
+Email: ${data.email}
+Telefone: ${data.phone || 'Não informado'}
+Empresa: ${data.company || 'Não informada'}
+Serviço: ${data.service || 'Não especificado'}
+Orçamento: ${data.budget || 'Não especificado'}
+
+Mensagem:
+${data.message}
+
+---
+Enviado em: ${new Date().toLocaleString('pt-BR')}`;
+    
+    // Criar mensagem WhatsApp formatada
+    const whatsappMessage = createWhatsAppMessage(data);
+    
+    // Links formatados
+    const emailLink = `mailto:ramosvando@gmail.com?subject=${encodeURIComponent('Nova mensagem do site - Portfólio')}&body=${encodeURIComponent(emailBody)}`;
+    const whatsappLink = `https://wa.me/5511948916368?text=${whatsappMessage}`;
+    
+    // Criar modal de opções
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    modal.innerHTML = `
+        <div style="background: white; border-radius: 15px; padding: 2rem; max-width: 90%; width: 400px; text-align: center;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                ✅ Dados Salvos com Sucesso!
+            </h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Escolha como prefere enviar sua mensagem:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="${emailLink}" class="contact-option-btn" style="background: #007bff; color: white; padding: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease;">
+                    <i class="fas fa-envelope"></i>
+                    Enviar por Email
+                </a>
+                <a href="${whatsappLink}" target="_blank" class="contact-option-btn" style="background: #25d366; color: white; padding: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease;">
+                    <i class="fab fa-whatsapp"></i>
+                    Enviar por WhatsApp
+                </a>
+                <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #6c757d; color: white; padding: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Adicionar estilos hover
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-    }).catch(error => {
-        hideLoading(form);
-        console.error('Erro no envio:', error);
-        showNotification('❌ Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+        .contact-option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(modal);
+    
+    // Fechar clicando fora
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+            style.remove();
+        }
     });
+    
+    // Mostrar notificação
+    showNotification('📋 Escolha como enviar sua mensagem!', 'info');
 }
 
 function validateForm(form) {
@@ -902,19 +973,21 @@ function saveLead(data) {
     localStorage.setItem('leads', JSON.stringify(leads));
 }
 
-// Verificar se retornou do Formspree
-function checkFormspreeReturn() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('sent') === 'true') {
-        // Remover o parâmetro da URL
-        const newUrl = window.location.pathname;
-        window.history.replaceState({}, document.title, newUrl);
-        
-        // Mostrar notificação de sucesso
-        setTimeout(() => {
-            showNotification('✅ Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
-        }, 500);
-    }
+// Função para criar mensagem WhatsApp formatada
+function createWhatsAppMessage(data) {
+    const message = `*Nova mensagem do portfólio:*
+
+*Nome:* ${data.name}
+*Email:* ${data.email}
+*Telefone:* ${data.phone || 'Não informado'}
+*Empresa:* ${data.company || 'Não informada'}
+*Serviço:* ${data.service || 'Não especificado'}
+*Orçamento:* ${data.budget || 'Não especificado'}
+
+*Mensagem:*
+${data.message}`;
+
+    return encodeURIComponent(message);
 }
 
 // ===================== MODAL =====================
